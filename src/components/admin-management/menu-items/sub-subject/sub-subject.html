@@ -68,11 +68,11 @@
         <th pSortableColumn="description">
           Mô tả <p-sortIcon field="description" />
         </th>
-        <th pSortableColumn="createdAt" style="width: 20%">
-          Ngày tạo <p-sortIcon field="createdAt" />
+        <th pSortableColumn="subjectName" style="width: 20%">
+          Môn học <p-sortIcon field="subjectName" />
         </th>
-        <th pSortableColumn="updatedAt" style="width: 20%">
-          Ngày sửa <p-sortIcon field="updatedAt" />
+        <th pSortableColumn="educationLevelName" style="width: 20%">
+          Trình độ <p-sortIcon field="educationLevelName" />
         </th>
         <th style="width: 15%">Hành động</th>
       </tr>
@@ -81,8 +81,8 @@
       <tr>
         <td>{{ item.name }}</td>
         <td style="max-width: 100px">{{ item.description || "NULL" }}</td>
-        <td>{{ item.createdAt | date:'hh:mm:ss dd/MM/yyyy' }}</td>
-        <td>{{ item.updatedAt | date:'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td>{{ item.subjectName }}</td>
+        <td>{{ item.educationLevelName }}</td>
         <td>
           <div class="flex justify-content-between">
             <i
@@ -133,6 +133,33 @@
         autocomplete="off"
       ></textarea>
     </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="description" class="font-semibold w-6rem">Môn học</label>
+      <p-dropdown
+        appendTo="body"
+        [options]="dropdown_subjects"
+        [(ngModel)]="selected_subject"
+        optionLabel="label"
+        placeholder="{{selected_subject.label}}"
+        class="flex-auto"
+        [style]="{'width': '100%'}"
+      />
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="description" class="font-semibold w-6rem">Trình độ</label>
+      <p-dropdown
+        appendTo="body"
+        [options]="dropdown_education_levels"
+        [(ngModel)]="selected_education_level"
+        optionLabel="label"
+        placeholder="{{selected_education_level.label}}"
+        class="flex-auto"
+        [style]="{'width': '100%'}"
+      />
+    </div>
+
     <div class="flex justify-content-end gap-2">
       <p-button
         label="Hủy"
@@ -159,7 +186,15 @@
       <ng-template pTemplate="body">
         <tr>
           <td>Mã</td>
-          <td>{{ selected_record.difficultLevelId }}</td>
+          <td>{{ selected_record.subSubjectId }}</td>
+        </tr>
+        <tr>
+          <td>Mã môn học</td>
+          <td>{{ selected_record.subjectId }}</td>
+        </tr>
+        <tr>
+          <td>Mã trình độ</td>
+          <td>{{ selected_record.educationLevelId }}</td>
         </tr>
         <tr>
           <td>Tên</td>
@@ -168,6 +203,14 @@
         <tr>
           <td>Mô tả</td>
           <td>{{ selected_record.description || "NULL" }}</td>
+        </tr>
+        <tr>
+          <td>Ngày tạo</td>
+          <td>{{ selected_record.subjectName }}</td>
+        </tr>
+        <tr>
+          <td>Ngày tạo</td>
+          <td>{{ selected_record.educationLevelName }}</td>
         </tr>
         <tr>
           <td>Ngày tạo</td>
@@ -194,7 +237,7 @@
       <label for="id" class="font-semibold w-6rem">Mã</label>
       <input
         disabled="true"
-        [ngModel]="selected_record.difficultLevelId"
+        [ngModel]="selected_record.subjectId"
         pInputText
         id="id"
         class="flex-auto"
@@ -222,6 +265,31 @@
         autocomplete="off"
       ></textarea>
     </div>
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="description" class="font-semibold w-6rem">Môn học</label>
+      <p-dropdown
+        appendTo="body"
+        [options]="dropdown_subjects"
+        [(ngModel)]="selected_subject"
+        optionLabel="label"
+        placeholder="{{selected_subject.label}}"
+        class="flex-auto"
+        [style]="{'width': '100%'}"
+      />
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="description" class="font-semibold w-6rem">Trình độ</label>
+      <p-dropdown
+        appendTo="body"
+        [options]="dropdown_education_levels"
+        [(ngModel)]="selected_education_level"
+        optionLabel="label"
+        placeholder="{{selected_education_level.label}}"
+        class="flex-auto"
+        [style]="{'width': '100%'}"
+      />
+    </div>
     <div class="flex justify-content-end gap-2">
       <p-button
         label="Hủy"
@@ -248,7 +316,7 @@
       <ng-template pTemplate="body">
         <tr>
           <td>Mã</td>
-          <td>{{ selected_record.difficultLevelId }}</td>
+          <td>{{ selected_record.subjectId }}</td>
         </tr>
         <tr>
           <td>Tên</td>

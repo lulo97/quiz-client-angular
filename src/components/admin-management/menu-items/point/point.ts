@@ -1,30 +1,30 @@
-import { Component, SimpleChanges, ViewChild } from '@angular/core';
-import { PanelModule } from 'primeng/panel';
-import { Table, TableModule } from 'primeng/table';
-import { CommonModule } from '@angular/common';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { MyToastService } from '../../../../services/my-toast.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BACKEND_URL, handleSort } from '../../../../utils/utils';
-import { FormsModule } from '@angular/forms';
-import { empty_record, IPoint } from './utils';
-import { DatePipe } from '@angular/common';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CheckboxModule } from 'primeng/checkbox';
-import { TagModule } from 'primeng/tag';
-import { DropdownModule } from 'primeng/dropdown';
+import { Component, SimpleChanges, ViewChild } from "@angular/core";
+import { PanelModule } from "primeng/panel";
+import { Table, TableModule } from "primeng/table";
+import { CommonModule } from "@angular/common";
+import { IconFieldModule } from "primeng/iconfield";
+import { InputIconModule } from "primeng/inputicon";
+import { InputTextModule } from "primeng/inputtext";
+import { DialogModule } from "primeng/dialog";
+import { ButtonModule } from "primeng/button";
+import { MyToastService } from "../../../../services/my-toast.service";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { BACKEND_URL, handleSort } from "../../../../utils/utils";
+import { FormsModule } from "@angular/forms";
+import { empty_record, IPoint } from "./utils";
+import { DatePipe } from "@angular/common";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { CheckboxModule } from "primeng/checkbox";
+import { TagModule } from "primeng/tag";
+import { DropdownModule } from "primeng/dropdown";
+import { CRUD_ACTION } from "../../utils";
 
-const SELECTOR = 'Point';
-const TEMPLATE_URL = './point.html';
+const SELECTOR = "Point";
+const TEMPLATE_URL = "./point.html";
 const _SCREEN = {
-  NAME_VI: 'Điểm số',
-  NAME_EN: 'Point',
+  NAME_VI: "Điểm số",
+  NAME_EN: "Point",
 };
-type CRUD_ACTION = 'create' | 'edit' | 'delete';
 
 @Component({
   selector: SELECTOR,
@@ -56,25 +56,27 @@ type CRUD_ACTION = 'create' | 'edit' | 'delete';
 })
 export class Point {
   SCREEN = _SCREEN;
-  @ViewChild('mydt') mydt: Table | undefined;
-  visibleCreateDialog = false;
-  visibleReadDialog = false;
-  visibleEditDialog = false;
-  visibleDeleteDialog = false;
+  @ViewChild("mydt") mydt: Table | undefined;
+  VISIBLE_DIALOG = {
+    CREATE: false,
+    READ: false,
+    EDIT: false,
+    DELETE: false,
+  };
   value: number = 0;
   isPenalty: boolean = false;
   datas: IPoint[] = [];
   selected_record: IPoint = empty_record;
   statuses = [
-    { label: 'Thưởng', value: false },
-    { label: 'Phạt', value: true },
+    { label: "Thưởng", value: false },
+    { label: "Phạt", value: true },
   ];
-  filter_value = '';
+  filter_value = "";
 
   constructor(private toast: MyToastService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.toast.showLoading('Đang tải bản ghi...');
+    this.toast.showLoading("Đang tải bản ghi...");
   }
 
   ngAfterViewInit() {
@@ -92,23 +94,23 @@ export class Point {
   }
 
   handleOpenCreate() {
-    this.visibleCreateDialog = true;
+    this.VISIBLE_DIALOG.CREATE = true;
   }
 
   handleOpenRead(selected_record: IPoint) {
-    this.visibleReadDialog = true;
+    this.VISIBLE_DIALOG.READ = true;
     this.selected_record = selected_record;
   }
 
   handleOpenEdit(selected_record: IPoint) {
-    this.visibleEditDialog = true;
+    this.VISIBLE_DIALOG.EDIT = true;
     this.selected_record = selected_record;
     this.value = selected_record.value;
     this.isPenalty = selected_record.isPenalty;
   }
 
   handleOpenDelete(selected_record: IPoint) {
-    this.visibleDeleteDialog = true;
+    this.VISIBLE_DIALOG.DELETE = true;
     this.selected_record = selected_record;
   }
 
@@ -116,17 +118,17 @@ export class Point {
     this.handleGetAll();
     this.value = 0;
     this.isPenalty = false;
-    if (action == 'create') {
-      this.toast.showSuccess('Tạo thành công!');
-      this.visibleCreateDialog = false;
+    if (action == "create") {
+      this.toast.showSuccess("Tạo thành công!");
+      this.VISIBLE_DIALOG.CREATE = false;
     }
-    if (action == 'edit') {
-      this.toast.showSuccess('Sửa thành công!');
-      this.visibleEditDialog = false;
+    if (action == "edit") {
+      this.toast.showSuccess("Sửa thành công!");
+      this.VISIBLE_DIALOG.EDIT = false;
     }
-    if (action == 'delete') {
-      this.toast.showSuccess('Xóa thành công!');
-      this.visibleDeleteDialog = false;
+    if (action == "delete") {
+      this.toast.showSuccess("Xóa thành công!");
+      this.VISIBLE_DIALOG.DELETE = false;
     }
   }
 
@@ -135,13 +137,13 @@ export class Point {
     const result = this.http.get(url);
     result.subscribe({
       complete: () => {
-        this.toast.changeLoading('success', 'Tải thành công!');
+        this.toast.changeLoading("success", "Tải thành công!");
       },
       next: (response: any) => {
         this.datas = response;
       },
       error: (error) => {
-        this.toast.changeLoading('error', 'Lỗi máy chủ!');
+        this.toast.changeLoading("error", "Lỗi máy chủ!");
         console.error(error);
       },
     });
@@ -149,7 +151,7 @@ export class Point {
 
   handleCreate() {
     if (this.value == 0 || this.value < 0) {
-      this.toast.showWarning('Giá trị điểm phải lớn hơn 0');
+      this.toast.showWarning("Giá trị điểm phải lớn hơn 0");
       return;
     }
     const url = BACKEND_URL + this.SCREEN.NAME_EN;
@@ -160,7 +162,7 @@ export class Point {
     const result = this.http.post(url, body);
     result.subscribe({
       complete: () => {
-        this.resetAfter('create');
+        this.resetAfter("create");
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -174,7 +176,7 @@ export class Point {
 
   handleEdit() {
     if (this.value == 0 || this.value < 0) {
-      this.toast.showWarning('Giá trị điểm phải lớn hơn 0');
+      this.toast.showWarning("Giá trị điểm phải lớn hơn 0");
       return;
     }
     const url =
@@ -188,7 +190,7 @@ export class Point {
     const result = this.http.put(url, body);
     result.subscribe({
       complete: () => {
-        this.resetAfter('edit');
+        this.resetAfter("edit");
       },
       next: (response) => {
         console.log(response);
@@ -206,7 +208,7 @@ export class Point {
     const result = this.http.delete(url);
     result.subscribe({
       complete: () => {
-        this.resetAfter('delete');
+        this.resetAfter("delete");
       },
       next: (response) => {
         console.log(response);

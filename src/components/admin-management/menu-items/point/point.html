@@ -145,7 +145,7 @@
   <p-dialog
     header="Tạo bản ghi"
     [modal]="true"
-    [(visible)]="visibleCreateDialog"
+    [(visible)]="VISIBLE_DIALOG.CREATE"
     [dismissableMask]="true"
   >
     <div class="flex align-items-center gap-3 mb-3">
@@ -169,7 +169,7 @@
       <p-button
         label="Hủy"
         severity="secondary"
-        (onClick)="visibleCreateDialog = false"
+        (onClick)="VISIBLE_DIALOG.CREATE = false"
       />
       <p-button label="Xác nhận" (onClick)="handleCreate()" />
     </div>
@@ -214,7 +214,7 @@
   <p-dialog
     header="Xem bản ghi"
     [modal]="true"
-    [(visible)]="visibleReadDialog"
+    [(visible)]="VISIBLE_DIALOG.READ"
     [dismissableMask]="true"
   >
     <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
@@ -226,7 +226,7 @@
   <p-dialog
     header="Sửa bản ghi"
     [modal]="true"
-    [(visible)]="visibleEditDialog"
+    [(visible)]="VISIBLE_DIALOG.EDIT"
     [dismissableMask]="true"
   >
     <div class="flex align-items-center gap-3 mb-3">
@@ -262,7 +262,7 @@
       <p-button
         label="Hủy"
         severity="secondary"
-        (onClick)="visibleEditDialog = false"
+        (onClick)="VISIBLE_DIALOG.EDIT = false"
       />
       <p-button label="Xác nhận" (onClick)="handleEdit()" />
     </div>
@@ -274,7 +274,7 @@
   <p-dialog
     header="Xóa bản ghi"
     [modal]="true"
-    [(visible)]="visibleDeleteDialog"
+    [(visible)]="VISIBLE_DIALOG.DELETE"
     [dismissableMask]="true"
   >
     <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
@@ -282,7 +282,7 @@
       <p-button
         label="Hủy"
         severity="secondary"
-        (onClick)="visibleDeleteDialog = false"
+        (onClick)="VISIBLE_DIALOG.DELETE = false"
       />
       <p-button label="Xác nhận" (onClick)="handleDelete()" />
     </div>

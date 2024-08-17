@@ -5,12 +5,14 @@ export interface ISubject {
   description: string;
   createdAt: string;
   updatedAt: string;
+  subSubjects: string[];
 }
 
 export const empty_record: ISubject = {
-  subjectId: '',
-  name: '',
-  description: '',
-  createdAt: '',
-  updatedAt: '',
+  subjectId: "",
+  name: "",
+  description: "",
+  createdAt: "",
+  updatedAt: "",
+  subSubjects: [],
 };

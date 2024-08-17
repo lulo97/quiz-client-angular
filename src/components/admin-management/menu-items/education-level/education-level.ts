@@ -1,31 +1,30 @@
-import { Component, SimpleChanges, ViewChild } from '@angular/core';
-import { PanelModule } from 'primeng/panel';
-import { Table, TableModule } from 'primeng/table';
-import { CommonModule } from '@angular/common';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { MyToastService } from '../../../../services/my-toast.service';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpResponse,
-} from '@angular/common/http';
-import {
-  BACKEND_URL,
-  handleSort,
-  isNullOrEmpty,
-} from '../../../../utils/utils';
-import { FormsModule } from '@angular/forms';
-import { empty_record, IEducationLevel } from './utils';
-import { DatePipe } from '@angular/common';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { SortEvent } from 'primeng/api';
+import { Component, SimpleChanges, ViewChild } from "@angular/core";
+import { PanelModule } from "primeng/panel";
+import { Table, TableModule } from "primeng/table";
+import { CommonModule } from "@angular/common";
+import { IconFieldModule } from "primeng/iconfield";
+import { InputIconModule } from "primeng/inputicon";
+import { InputTextModule } from "primeng/inputtext";
+import { DialogModule } from "primeng/dialog";
+import { ButtonModule } from "primeng/button";
+import { MyToastService } from "../../../../services/my-toast.service";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { BACKEND_URL, handleSort } from "../../../../utils/utils";
+import { FormsModule } from "@angular/forms";
+import { empty_record, IEducationLevel } from "./utils";
+import { DatePipe } from "@angular/common";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { CRUD_ACTION } from "../../utils";
+
+const SELECTOR = "EducationLevel";
+const TEMPLATE_URL = "./education-level.html";
+const _SCREEN = {
+  NAME_VI: "Trình độ học vấn",
+  NAME_EN: "EducationLevel",
+};
 
 @Component({
-  selector: 'EducationLevel',
+  selector: SELECTOR,
   imports: [
     PanelModule,
     TableModule,
@@ -40,7 +39,7 @@ import { SortEvent } from 'primeng/api';
     InputTextareaModule,
   ],
   standalone: true,
-  templateUrl: './education-level.html',
+  templateUrl: TEMPLATE_URL,
   styles: [
     `
       :host {
@@ -50,24 +49,23 @@ import { SortEvent } from 'primeng/api';
   ],
 })
 export class EducationLevel {
-  SCREEN = {
-    NAME_VI: 'Trình độ học vấn',
-    NAME_EN: 'EducationLevel',
+  SCREEN = _SCREEN;
+  @ViewChild("mydt") mydt: Table | undefined;
+  VISIBLE_DIALOG = {
+    CREATE: false,
+    READ: false,
+    EDIT: false,
+    DELETE: false,
   };
-  @ViewChild('mydt') mydt: Table | undefined;
-  visibleCreateDialog = false;
-  visibleReadDialog = false;
-  visibleEditDialog = false;
-  visibleDeleteDialog = false;
-  name: string = '';
-  description: string = '';
+  name: string = "";
+  description: string = "";
   datas: IEducationLevel[] = [];
   selected_record: IEducationLevel = empty_record;
 
   constructor(private toast: MyToastService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.toast.showLoading('Đang tải bản ghi...');
+    this.toast.showLoading("Đang tải bản ghi...");
   }
 
   ngAfterViewInit() {
@@ -77,21 +75,21 @@ export class EducationLevel {
   //Import function from utils.ts and assign it to a field in class
   _handleSort = handleSort;
 
-  resetAfter(action: 'create' | 'edit' | 'delete') {
+  resetAfter(action: CRUD_ACTION) {
     this.handleGetAll();
-    this.name = '';
-    this.description = '';
-    if (action == 'create') {
-      this.toast.showSuccess('Tạo thành công!');
-      this.visibleCreateDialog = false;
+    this.name = "";
+    this.description = "";
+    if (action == "create") {
+      this.toast.showSuccess("Tạo thành công!");
+      this.VISIBLE_DIALOG.CREATE = false;
     }
-    if (action == 'edit') {
-      this.toast.showSuccess('Sửa thành công!');
-      this.visibleEditDialog = false;
+    if (action == "edit") {
+      this.toast.showSuccess("Sửa thành công!");
+      this.VISIBLE_DIALOG.EDIT = false;
     }
-    if (action == 'delete') {
-      this.toast.showSuccess('Xóa thành công!');
-      this.visibleDeleteDialog = false;
+    if (action == "delete") {
+      this.toast.showSuccess("Xóa thành công!");
+      this.VISIBLE_DIALOG.DELETE = false;
     }
   }
   handleFilterGlobal(event: any, stringVal: any) {
@@ -106,42 +104,42 @@ export class EducationLevel {
     const result = this.http.get(url);
     result.subscribe({
       complete: () => {
-        this.toast.changeLoading('success', 'Tải thành công!');
+        this.toast.changeLoading("success", "Tải thành công!");
       },
       next: (response: any) => {
         this.datas = response;
       },
       error: (error) => {
-        this.toast.changeLoading('error', 'Lỗi máy chủ!');
+        this.toast.changeLoading("error", "Lỗi máy chủ!");
         console.error(error);
       },
     });
   }
 
   handleOpenCreate() {
-    this.visibleCreateDialog = true;
+    this.VISIBLE_DIALOG.CREATE = true;
   }
 
   handleOpenRead(selected_record: IEducationLevel) {
-    this.visibleReadDialog = true;
+    this.VISIBLE_DIALOG.READ = true;
     this.selected_record = selected_record;
   }
 
   handleOpenEdit(selected_record: IEducationLevel) {
-    this.visibleEditDialog = true;
+    this.VISIBLE_DIALOG.EDIT = true;
     this.selected_record = selected_record;
     this.name = selected_record.name;
     this.description = selected_record.description;
   }
 
   handleOpenDelete(selected_record: IEducationLevel) {
-    this.visibleDeleteDialog = true;
+    this.VISIBLE_DIALOG.DELETE = true;
     this.selected_record = selected_record;
   }
 
   handleCreate() {
-    if (this.name == '') {
-      this.toast.showWarning('Tên trống!');
+    if (this.name == "") {
+      this.toast.showWarning("Tên trống!");
       return;
     }
     const url = BACKEND_URL + this.SCREEN.NAME_EN;
@@ -152,7 +150,7 @@ export class EducationLevel {
     const result = this.http.post(url, body);
     result.subscribe({
       complete: () => {
-        this.resetAfter('create');
+        this.resetAfter("create");
       },
       next: (response) => {
         console.log(response);
@@ -165,8 +163,8 @@ export class EducationLevel {
   }
 
   handleEdit() {
-    if (this.name == '') {
-      this.toast.showWarning('Tên trống!');
+    if (this.name == "") {
+      this.toast.showWarning("Tên trống!");
       return;
     }
     const url =
@@ -181,7 +179,7 @@ export class EducationLevel {
     const result = this.http.put(url, body);
     result.subscribe({
       complete: () => {
-        this.resetAfter('edit');
+        this.resetAfter("edit");
       },
       next: (response) => {
         console.log(response);
@@ -200,7 +198,7 @@ export class EducationLevel {
     const result = this.http.delete(url);
     result.subscribe({
       complete: () => {
-        this.resetAfter('delete');
+        this.resetAfter("delete");
       },
       next: (response) => {
         console.log(response);

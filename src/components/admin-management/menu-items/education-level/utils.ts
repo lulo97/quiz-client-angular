@@ -5,12 +5,14 @@ export interface IEducationLevel {
   description: string;
   createdAt: string;
   updatedAt: string;
+  subSubjects: string[];
 }
 
 export const empty_record: IEducationLevel = {
-  educationLevelId: '',
-  name: '',
-  description: '',
-  createdAt: '',
-  updatedAt: '',
+  educationLevelId: "",
+  name: "",
+  description: "",
+  createdAt: "",
+  updatedAt: "",
+  subSubjects: [],
 };
