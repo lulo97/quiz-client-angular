@@ -1,0 +1,290 @@
+<ng-container *ngTemplateOutlet="createDialog"></ng-container>
+<ng-container *ngTemplateOutlet="readDialog"></ng-container>
+<ng-container *ngTemplateOutlet="editDialog"></ng-container>
+<ng-container *ngTemplateOutlet="deleteDialog"></ng-container>
+
+<ng-template #pointCategory let-_isPenalty="_isPenalty">
+  <p-tag *ngIf="_isPenalty == false" severity="success" value="Thưởng" />
+  <p-tag *ngIf="_isPenalty == true" severity="danger" value="Phạt" />
+</ng-template>
+
+<!-- Screen -->
+<div
+  style="border: 1px solid #e2e8f0"
+  class="h-full w-full bg-white border-round flex flex-column px-4"
+>
+  <!-- Screen name -->
+  <div class="pt-3 mb-4 font-semibold text-xl text-gray-700 cursor-pointer">
+    {{ SCREEN.NAME_VI }}
+  </div>
+  <!-- Top -->
+  <ng-container *ngTemplateOutlet="topSection"></ng-container>
+  <!-- Table -->
+  <div class="flex-1 pt-2">
+    <ng-container *ngTemplateOutlet="tableSection"></ng-container>
+  </div>
+</div>
+
+<!-- Top Template -->
+<ng-template #topSection>
+  <div class="flex justify-content-end gap-2">
+    <ng-container *ngTemplateOutlet="globalSearch"></ng-container>
+    <p-button (onClick)="handleOpenCreate()" label="Tạo" />
+  </div>
+</ng-template>
+
+<!-- Search Template -->
+<ng-template #globalSearch>
+  <p-iconField iconPosition="left">
+    <p-inputIcon>
+      <i class="pi pi-search"></i>
+    </p-inputIcon>
+    <input
+      pInputText
+      type="text"
+      (input)="handleFilterGlobal($event, 'contains')"
+      placeholder="Tìm kiếm..."
+      class="flex-auto"
+      autocomplete="off"
+    />
+  </p-iconField>
+</ng-template>
+
+<!-- Table Template -->
+<ng-template #tableSection>
+  <p-table
+    #mydt
+    sortField="value"
+    [sortOrder]="1"
+    (sortFunction)="_handleSort($event)"
+    [customSort]="true"
+    [value]="datas"
+    [paginator]="true"
+    [rows]="5"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['value']"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="value" style="width: 15%">
+          Giá trị <p-sortIcon field="value" />
+        </th>
+        <th>
+          Loại điểm
+          <p-columnFilter
+            showMatchModes="false"
+            showApplyButton="false"
+            showClearButton="false"
+            showOperator="false"
+            showAddButton="false"
+            field="isPenalty"
+            matchMode="equals"
+            display="menu"
+          >
+            <ng-template pTemplate="filter" let-filter="filterCallback">
+              <p-dropdown
+                [options]="statuses"
+                (onChange)="filter($event.value)"
+                placeholder="Any"
+              >
+                <ng-template let-option pTemplate="item">
+                  <ng-container
+                    [ngTemplateOutlet]="pointCategory"
+                    [ngTemplateOutletContext]="{_isPenalty:option.value}"
+                  ></ng-container>
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th pSortableColumn="createdAt" style="width: 20%">
+          Ngày tạo <p-sortIcon field="createdAt" />
+        </th>
+        <th pSortableColumn="updatedAt" style="width: 20%">
+          Ngày sửa <p-sortIcon field="updatedAt" />
+        </th>
+        <th style="width: 15%">Hành động</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.value }}</td>
+        <td style="max-width: 100px">
+          <ng-container
+            [ngTemplateOutlet]="pointCategory"
+            [ngTemplateOutletContext]="{_isPenalty:item.isPenalty}"
+          >
+          </ng-container>
+        </td>
+        <td>{{ item.createdAt | date:'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td>{{ item.updatedAt | date:'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td>
+          <div class="flex justify-content-between">
+            <i
+              (click)="handleOpenRead(item)"
+              class="pi pi-eye text-xl text-yellow-500 hover:text-yellow-600"
+            ></i>
+            <i
+              (click)="handleOpenEdit(item)"
+              class="pi pi-pencil text-xl text-cyan-500 hover:text-cyan-600"
+            ></i>
+            <i
+              (click)="handleOpenDelete(item)"
+              class="pi pi-trash text-xl text-red-500 hover:text-red-600"
+            ></i>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<!-- Create dialog -->
+<ng-template #createDialog>
+  <p-dialog
+    header="Tạo bản ghi"
+    [modal]="true"
+    [(visible)]="visibleCreateDialog"
+    [dismissableMask]="true"
+  >
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="value" class="font-semibold w-8rem">Giá trị</label>
+      <input
+        [(ngModel)]="value"
+        type="number"
+        pInputText
+        id="value"
+        class="flex-auto"
+        autocomplete="off"
+        min="1"
+        max="100"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="isPenalty" class="font-semibold w-8rem">Là điểm phạt</label>
+      <p-checkbox [(ngModel)]="isPenalty" [binary]="true" inputId="binary" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Hủy"
+        severity="secondary"
+        (onClick)="visibleCreateDialog = false"
+      />
+      <p-button label="Xác nhận" (onClick)="handleCreate()" />
+    </div>
+  </p-dialog>
+</ng-template>
+
+<!-- Read dialog content -->
+<ng-template #readDialogContent>
+  <p-table [value]="[selected_record]" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="body">
+      <tr>
+        <td>Mã</td>
+        <td>{{ selected_record.pointId }}</td>
+      </tr>
+      <tr>
+        <td>Giá trị</td>
+        <td>{{ selected_record.value }}</td>
+      </tr>
+      <tr>
+        <td>Loại điểm</td>
+        <td>
+          <ng-container
+            [ngTemplateOutlet]="pointCategory"
+            [ngTemplateOutletContext]="{_isPenalty:selected_record.isPenalty}"
+          ></ng-container>
+        </td>
+      </tr>
+      <tr>
+        <td>Ngày tạo</td>
+        <td>{{ selected_record.createdAt }}</td>
+      </tr>
+      <tr>
+        <td>Ngày sửa</td>
+        <td>{{ selected_record.updatedAt }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<!-- Read dialog -->
+<ng-template #readDialog>
+  <p-dialog
+    header="Xem bản ghi"
+    [modal]="true"
+    [(visible)]="visibleReadDialog"
+    [dismissableMask]="true"
+  >
+    <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
+  </p-dialog>
+</ng-template>
+
+<!-- Edit dialog -->
+<ng-template #editDialog>
+  <p-dialog
+    header="Sửa bản ghi"
+    [modal]="true"
+    [(visible)]="visibleEditDialog"
+    [dismissableMask]="true"
+  >
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="id" class="font-semibold w-6rem">Mã</label>
+      <input
+        disabled="true"
+        [ngModel]="selected_record.pointId"
+        pInputText
+        id="id"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="value" class="font-semibold w-6rem">Giá trị </label>
+      <input
+        [(ngModel)]="value"
+        pInputText
+        id="value"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="isPenalty" class="font-semibold w-6rem">Loại điểm</label>
+      <ng-container
+        [ngTemplateOutlet]="pointCategory"
+        [ngTemplateOutletContext]="{_isPenalty:isPenalty}"
+      >
+      </ng-container>
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Hủy"
+        severity="secondary"
+        (onClick)="visibleEditDialog = false"
+      />
+      <p-button label="Xác nhận" (onClick)="handleEdit()" />
+    </div>
+  </p-dialog>
+</ng-template>
+
+<!-- Delete dialog -->
+<ng-template #deleteDialog>
+  <p-dialog
+    header="Xóa bản ghi"
+    [modal]="true"
+    [(visible)]="visibleDeleteDialog"
+    [dismissableMask]="true"
+  >
+    <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
+    <div class="mt-2 flex justify-content-end gap-2">
+      <p-button
+        label="Hủy"
+        severity="secondary"
+        (onClick)="visibleDeleteDialog = false"
+      />
+      <p-button label="Xác nhận" (onClick)="handleDelete()" />
+    </div>
+  </p-dialog>
+</ng-template>
