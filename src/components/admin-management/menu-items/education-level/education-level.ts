@@ -192,6 +192,10 @@ export class EducationLevel {
   }
 
   handleDelete() {
+    if (this.selected_record.subSubjects.length > 0) {
+      this.toast.showWarning("Trình đọc học vấn có Chương phụ thuộc!");
+      return;
+    }
     const url =
       BACKEND_URL +
       `${this.SCREEN.NAME_EN}/${this.selected_record.educationLevelId}`;

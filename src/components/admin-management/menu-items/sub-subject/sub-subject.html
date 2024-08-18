@@ -171,6 +171,50 @@
   </p-dialog>
 </ng-template>
 
+<!-- Read dialog content -->
+<ng-template #readDialogContent>
+  <p-table [value]="[selected_record]" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="body">
+      <tr>
+        <td>Mã</td>
+        <td>{{ selected_record.subSubjectId }}</td>
+      </tr>
+      <tr>
+        <td>Mã môn học</td>
+        <td>{{ selected_record.subjectId }}</td>
+      </tr>
+      <tr>
+        <td>Mã trình độ</td>
+        <td>{{ selected_record.educationLevelId }}</td>
+      </tr>
+      <tr>
+        <td>Tên</td>
+        <td>{{ selected_record.name }}</td>
+      </tr>
+      <tr>
+        <td>Mô tả</td>
+        <td>{{ selected_record.description || "NULL" }}</td>
+      </tr>
+      <tr>
+        <td>Môn học</td>
+        <td>{{ selected_record.subjectName }}</td>
+      </tr>
+      <tr>
+        <td>Trình độ</td>
+        <td>{{ selected_record.educationLevelName }}</td>
+      </tr>
+      <tr>
+        <td>Ngày tạo</td>
+        <td>{{ selected_record.createdAt }}</td>
+      </tr>
+      <tr>
+        <td>Ngày sửa</td>
+        <td>{{ selected_record.updatedAt }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
 <!-- Read dialog -->
 <ng-template #readDialog>
   <p-dialog
@@ -179,49 +223,7 @@
     [(visible)]="VISIBLE_DIALOG.READ"
     [dismissableMask]="true"
   >
-    <p-table
-      [value]="[selected_record]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template pTemplate="body">
-        <tr>
-          <td>Mã</td>
-          <td>{{ selected_record.subSubjectId }}</td>
-        </tr>
-        <tr>
-          <td>Mã môn học</td>
-          <td>{{ selected_record.subjectId }}</td>
-        </tr>
-        <tr>
-          <td>Mã trình độ</td>
-          <td>{{ selected_record.educationLevelId }}</td>
-        </tr>
-        <tr>
-          <td>Tên</td>
-          <td>{{ selected_record.name }}</td>
-        </tr>
-        <tr>
-          <td>Mô tả</td>
-          <td>{{ selected_record.description || "NULL" }}</td>
-        </tr>
-        <tr>
-          <td>Ngày tạo</td>
-          <td>{{ selected_record.subjectName }}</td>
-        </tr>
-        <tr>
-          <td>Ngày tạo</td>
-          <td>{{ selected_record.educationLevelName }}</td>
-        </tr>
-        <tr>
-          <td>Ngày tạo</td>
-          <td>{{ selected_record.createdAt }}</td>
-        </tr>
-        <tr>
-          <td>Ngày sửa</td>
-          <td>{{ selected_record.updatedAt }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
   </p-dialog>
 </ng-template>
 
@@ -309,33 +311,7 @@
     [(visible)]="VISIBLE_DIALOG.DELETE"
     [dismissableMask]="true"
   >
-    <p-table
-      [value]="[selected_record]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template pTemplate="body">
-        <tr>
-          <td>Mã</td>
-          <td>{{ selected_record.subjectId }}</td>
-        </tr>
-        <tr>
-          <td>Tên</td>
-          <td>{{ selected_record.name }}</td>
-        </tr>
-        <tr>
-          <td>Mô tả</td>
-          <td>{{ selected_record.description || "NULL" }}</td>
-        </tr>
-        <tr>
-          <td>Ngày tạo</td>
-          <td>{{ selected_record.createdAt }}</td>
-        </tr>
-        <tr>
-          <td>Ngày sửa</td>
-          <td>{{ selected_record.updatedAt }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
     <div class="mt-2 flex justify-content-end gap-2">
       <p-button
         label="Hủy"

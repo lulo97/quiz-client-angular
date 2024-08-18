@@ -306,7 +306,8 @@ export class SubSubject {
 
   handleDelete() {
     const url =
-      BACKEND_URL + `${this.SCREEN.NAME_EN}/${this.selected_record.subjectId}`;
+      BACKEND_URL +
+      `${this.SCREEN.NAME_EN}/${this.selected_record.subSubjectId}`;
     const result = this.http.delete(url);
     result.subscribe({
       complete: () => {

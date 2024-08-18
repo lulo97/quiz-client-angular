@@ -192,6 +192,10 @@ export class Subject {
   }
 
   handleDelete() {
+    if (this.selected_record.subSubjects.length > 0) {
+      this.toast.showWarning("Môn học có Chương phụ thuộc!");
+      return;
+    }
     const url =
       BACKEND_URL + `${this.SCREEN.NAME_EN}/${this.selected_record.subjectId}`;
     const result = this.http.delete(url);
