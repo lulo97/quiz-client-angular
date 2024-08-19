@@ -58,6 +58,7 @@ const _SCREEN = {
   ],
 })
 export class DifficultLevel {
+  IsFirstRender = true;
   SCREEN = _SCREEN;
   @ViewChild("mydt") mydt: Table | undefined;
   VISIBLE_DIALOG = {
@@ -96,7 +97,10 @@ export class DifficultLevel {
     const result = this.http.get(url);
     result.subscribe({
       complete: () => {
-        this.toast.changeLoading("success", "Tải thành công!");
+        if (this.IsFirstRender) {
+          this.toast.changeLoading("success", "Tải thành công!");
+          this.IsFirstRender = false;
+        }
       },
       next: (response: any) => {
         this.datas = response;
@@ -163,7 +167,7 @@ export class DifficultLevel {
         this.resetAfter("create");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -192,7 +196,7 @@ export class DifficultLevel {
         this.resetAfter("edit");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -211,7 +215,7 @@ export class DifficultLevel {
         this.resetAfter("delete");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);

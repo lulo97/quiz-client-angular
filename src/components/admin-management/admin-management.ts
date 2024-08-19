@@ -1,13 +1,15 @@
 import { Component, ViewChild, ViewContainerRef } from "@angular/core";
 import { MenuItem } from "primeng/api";
 import { TieredMenuModule } from "primeng/tieredmenu";
-import { General } from "./menu-items/general";
+import { General } from "./menu-items/general/general";
 import { Subject } from "./menu-items/subject/subject";
 import { Language } from "./menu-items/language/language";
 import { EducationLevel } from "./menu-items/education-level/education-level";
 import { DifficultLevel } from "./menu-items/difficult-level/difficult-level";
 import { Point } from "./menu-items/point/point";
 import { SubSubject } from "./menu-items/sub-subject/sub-subject";
+import { QuestionType } from "./menu-items/question-type/question-type";
+import { Book } from "./menu-items/book/book";
 
 @Component({
   selector: "AdminManagement",
@@ -38,7 +40,7 @@ export class AdminManagement {
   container!: ViewContainerRef;
 
   ngAfterViewInit() {
-    this.handleChangeMenuItem(SubSubject);
+    this.handleChangeMenuItem(General);
   }
 
   handleChangeMenuItem(new_component: any) {
@@ -49,8 +51,18 @@ export class AdminManagement {
   items: MenuItem[] = [
     {
       label: "Tổng quan",
-      icon: "pi pi-book",
+      icon: "pi pi-desktop",
       command: () => this.handleChangeMenuItem(General),
+    },
+    {
+      label: "Loại câu hỏi",
+      icon: "pi pi-question",
+      command: () => this.handleChangeMenuItem(QuestionType),
+    },
+    {
+      label: "Sách giáo khoa",
+      icon: "pi pi-book",
+      command: () => this.handleChangeMenuItem(Book),
     },
     {
       label: "Môn học",

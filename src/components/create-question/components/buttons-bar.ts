@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { ModalCreate } from './modals/modal-create';
-import { ModalSetting } from './modals/modal-setting';
-import { CreateQuestionService } from './services/create-question.service';
-import { ActionEnum } from './utils/utils';
+import { Component } from "@angular/core";
+import { ButtonModule } from "primeng/button";
+import { ModalCreate } from "../modals/modal-create";
+import { ModalSetting } from "../modals/modal-setting";
+import { CreateQuestionService } from "../services/create-question.service";
+import { ActionEnum } from "../utils/utils";
 
 @Component({
-  selector: 'ButtonsBar',
+  selector: "ButtonsBar",
   standalone: true,
   imports: [ButtonModule, ModalSetting, ModalCreate],
   template: `
@@ -15,12 +15,14 @@ import { ActionEnum } from './utils/utils';
     >
       <div class="flex justify-content-between align-items-center gap-2">
         <p-button
-          (click)="service.changeData(ActionEnum.AddAnswer, null)"
+          (click)="service.handleAction(ActionEnum.AddAnswer, null)"
           icon="pi pi-plus"
           label="Lựa chọn"
         />
         <p-button
-          (click)="service.changeData(ActionEnum.ChangeExplanationAllow, null)"
+          (click)="
+            service.handleAction(ActionEnum.ChangeExplanationAllow, null)
+          "
           icon="pi pi-plus"
           label="Giải thích"
         />

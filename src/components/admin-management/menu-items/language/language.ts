@@ -49,6 +49,7 @@ const _SCREEN = {
   ],
 })
 export class Language {
+  IsFirstRender = true;
   SCREEN = _SCREEN;
   @ViewChild("mydt") mydt: Table | undefined;
   VISIBLE_DIALOG = {
@@ -105,7 +106,10 @@ export class Language {
     const result = this.http.get(url);
     result.subscribe({
       complete: () => {
-        this.toast.changeLoading("success", "Tải thành công!");
+        if (this.IsFirstRender) {
+          this.toast.changeLoading("success", "Tải thành công!");
+          this.IsFirstRender = false;
+        }
       },
       next: (response: any) => {
         this.datas = response;
@@ -155,7 +159,7 @@ export class Language {
         this.resetAfter("create");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -183,7 +187,7 @@ export class Language {
         this.resetAfter("edit");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -201,7 +205,7 @@ export class Language {
         this.resetAfter("delete");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);

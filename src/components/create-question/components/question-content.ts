@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FormsModule } from '@angular/forms';
-import { CreateQuestionService } from './services/create-question.service';
-import { ActionEnum } from './utils/utils';
+import { Component } from "@angular/core";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { FormsModule } from "@angular/forms";
+import { CreateQuestionService } from "../services/create-question.service";
+import { ActionEnum } from "../utils/utils";
 
 @Component({
-  selector: 'QuestionContent',
+  selector: "QuestionContent",
   standalone: true,
   imports: [FormsModule, InputTextareaModule],
   template: `
@@ -27,7 +27,7 @@ export class QuestionContent {
   handleChange(event: Event) {
     const event_html_input = event.target as HTMLInputElement;
     const NewQuestionContent = event_html_input.value;
-    this.service.changeData(
+    this.service.handleAction(
       ActionEnum.ChangeQuestionContent,
       NewQuestionContent
     );

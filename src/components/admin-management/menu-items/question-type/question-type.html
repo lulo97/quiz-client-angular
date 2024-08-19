@@ -111,6 +111,9 @@
     [(visible)]="VISIBLE_DIALOG.CREATE"
     [dismissableMask]="true"
   >
+    <span class="p-text-secondary block mb-5"
+      >Tên loại câu hỏi là duy nhất.</span
+    >
     <div class="flex align-items-center gap-3 mb-3">
       <label for="name" class="font-semibold w-6rem">Tên</label>
       <input
@@ -149,7 +152,7 @@
     <ng-template pTemplate="body">
       <tr>
         <td>Mã</td>
-        <td>{{ selected_record.difficultLevelId }}</td>
+        <td>{{ selected_record.questionTypeId }}</td>
       </tr>
       <tr>
         <td>Tên</td>
@@ -178,8 +181,7 @@
     [modal]="true"
     [(visible)]="VISIBLE_DIALOG.READ"
     [dismissableMask]="true"
-  >
-    <ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
+    ><ng-container [ngTemplateOutlet]="readDialogContent"></ng-container>
   </p-dialog>
 </ng-template>
 
@@ -191,11 +193,14 @@
     [(visible)]="VISIBLE_DIALOG.EDIT"
     [dismissableMask]="true"
   >
+    <span class="p-text-secondary block mb-5"
+      >Tên loại câu hỏi là duy nhất.</span
+    >
     <div class="flex align-items-center gap-3 mb-3">
       <label for="id" class="font-semibold w-6rem">Mã</label>
       <input
         disabled="true"
-        [ngModel]="selected_record.difficultLevelId"
+        [ngModel]="selected_record.questionTypeId"
         pInputText
         id="id"
         class="flex-auto"

@@ -3,29 +3,30 @@ import { DropdownModule } from "primeng/dropdown";
 import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: "QuestionTypeSelect",
+  selector: "BookSelect",
   standalone: true,
-  imports: [FormsModule, DropdownModule],
+  imports: [CommonModule, FormsModule, DropdownModule],
   template: `
-    <div class="font-semibold mb-1 w-fit">Loại trắc nghiệm</div>
+    <div class="font-semibold mb-1 w-fit">Sách giáo khoa</div>
     <p-dropdown
+      [editable]="false"
       appendTo="body"
       [options]="datas"
       [(ngModel)]="selected_record"
       [showClear]="true"
-      [editable]="false"
       [filter]="true"
       [virtualScroll]="true"
       [virtualScrollItemSize]="40"
       [style]="{ 'min-width': '20rem', width: '100%' }"
       optionLabel="name"
-      placeholder="Chọn loại câu hỏi..."
+      placeholder="Chọn bộ sách..."
     />
   `,
 })
-export class QuestionTypeSelect {
+export class BookSelect {
   constructor(public service: CreateQuestionService) {}
 
   datas: ISelectItem[] = [];
@@ -34,13 +35,12 @@ export class QuestionTypeSelect {
   ngOnInit(): void {
     this.service.questionMetadata$.subscribe((response) => {
       if (response) {
-        this.datas = response.questionTypes.map((ele) => ({
-          code: ele.questionTypeId,
+        this.datas = response.books.map((ele) => ({
+          code: ele.bookId,
           name: ele.name,
         }));
         const find_record = this.datas.find(
-          (ele) =>
-            ele.name.toString().toLowerCase() == DEFAULT_METADATA.QUESTION_TYPE
+          (ele) => ele.name.toString().toLowerCase() == DEFAULT_METADATA.BOOK
         );
         if (find_record) {
           this.selected_record = find_record;

@@ -16,7 +16,7 @@ import { DatePipe } from "@angular/common";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { CheckboxModule } from "primeng/checkbox";
 import { TagModule } from "primeng/tag";
-import { DropdownModule } from "primeng/dropdown";
+import { DropdownChangeEvent, DropdownModule } from "primeng/dropdown";
 import { CRUD_ACTION } from "../../utils";
 
 const SELECTOR = "Point";
@@ -55,6 +55,7 @@ const _SCREEN = {
   ],
 })
 export class Point {
+  IsFirstRender = true;
   SCREEN = _SCREEN;
   @ViewChild("mydt") mydt: Table | undefined;
   VISIBLE_DIALOG = {
@@ -137,7 +138,10 @@ export class Point {
     const result = this.http.get(url);
     result.subscribe({
       complete: () => {
-        this.toast.changeLoading("success", "Tải thành công!");
+        if (this.IsFirstRender) {
+          this.toast.changeLoading("success", "Tải thành công!");
+          this.IsFirstRender = false;
+        }
       },
       next: (response: any) => {
         this.datas = response;
@@ -169,7 +173,7 @@ export class Point {
         console.error(response);
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
     });
   }
@@ -193,7 +197,7 @@ export class Point {
         this.resetAfter("edit");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -211,7 +215,7 @@ export class Point {
         this.resetAfter("delete");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);

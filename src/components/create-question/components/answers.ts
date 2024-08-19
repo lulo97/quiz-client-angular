@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { OrderListModule } from 'primeng/orderlist';
-import { Answer } from './answer';
-import { FormsModule } from '@angular/forms';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { CreateQuestionService } from './services/create-question.service';
+import { Component } from "@angular/core";
+import { OrderListModule } from "primeng/orderlist";
+import { Answer } from "./answer";
+import { FormsModule } from "@angular/forms";
+import { RadioButtonModule } from "primeng/radiobutton";
+import { CreateQuestionService } from "../services/create-question.service";
 
 @Component({
-  selector: 'Answers',
+  selector: "Answers",
   standalone: true,
   imports: [OrderListModule, Answer, FormsModule, RadioButtonModule],
   template: `

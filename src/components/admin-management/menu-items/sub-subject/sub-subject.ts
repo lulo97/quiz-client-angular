@@ -256,7 +256,7 @@ export class SubSubject {
         this.resetAfter("create");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -295,7 +295,7 @@ export class SubSubject {
         this.resetAfter("edit");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);
@@ -314,7 +314,7 @@ export class SubSubject {
         this.resetAfter("delete");
       },
       next: (response) => {
-        console.log(response);
+        //console.log(response);
       },
       error: (response: HttpErrorResponse) => {
         this.toast.showError(response.error.detail);

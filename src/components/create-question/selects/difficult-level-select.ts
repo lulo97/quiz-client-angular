@@ -1,54 +1,54 @@
-import { Component } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
+import { Component } from "@angular/core";
+import { DropdownModule } from "primeng/dropdown";
+import { FormsModule } from "@angular/forms";
+import { CreateQuestionService } from "../services/create-question.service";
+import { DEFAULT_METADATA, ISelectItem } from "./utils";
+import { CommonModule } from "@angular/common";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'DifficultLevelSelect',
+  selector: "DifficultLevelSelect",
   standalone: true,
-  imports: [FormsModule, DropdownModule],
+  imports: [CommonModule, FormsModule, DropdownModule],
   template: `
     <div class="font-semibold mb-1 w-fit">Độ khó</div>
     <p-dropdown
-      [options]="values"
-      [(ngModel)]="selectedValue"
+      appendTo="body"
+      [options]="datas"
+      [(ngModel)]="selected_record"
       [showClear]="true"
-      [editable]="true"
+      [editable]="false"
       [filter]="true"
       [virtualScroll]="true"
       [virtualScrollItemSize]="40"
       [style]="{ 'min-width': '20rem', width: '100%' }"
       optionLabel="name"
-      placeholder="Select a City"
+      placeholder="Chọn độ khó..."
     />
   `,
 })
 export class DifficultLevelSelect {
-  visible: boolean = false;
-  showDialog() {
-    this.visible = true;
-  }
+  constructor(public service: CreateQuestionService) {}
 
-  values:
-    | {
-        name: string;
-        code: string;
-      }[]
-    | undefined;
+  datas: ISelectItem[] = [];
+  selected_record: ISelectItem | undefined = undefined;
 
-  selectedValue:
-    | {
-        name: string;
-        code: string;
+  ngOnInit(): void {
+    this.service.questionMetadata$.subscribe((response) => {
+      if (response) {
+        this.datas = response.difficultLevels.map((ele) => ({
+          code: ele.difficultLevelId,
+          name: ele.name,
+        }));
+        const find_record = this.datas.find(
+          (ele) =>
+            ele.name.toString().toLowerCase() ==
+            DEFAULT_METADATA.DIFFICULT_LEVEL
+        );
+        if (find_record) {
+          this.selected_record = find_record;
+        }
       }
-    | undefined;
-
-  ngOnInit() {
-    this.values = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' },
-    ];
+    });
   }
 }

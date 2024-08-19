@@ -1,4 +1,12 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { IDifficultLevel } from "../../admin-management/menu-items/difficult-level/utils";
+import { IEducationLevel } from "../../admin-management/menu-items/education-level/utils";
+import { ISubject } from "../../admin-management/menu-items/subject/utils";
+import { ISubSubject } from "../../admin-management/menu-items/sub-subject/utils";
+import { IQuestionType } from "../../admin-management/menu-items/question-type/utils";
+import { ILanguage } from "../../admin-management/menu-items/language/utils";
+import { IPoint } from "../../admin-management/menu-items/point/utils";
+import { IBook } from "../../admin-management/menu-items/book/utils";
 
 export interface IAnswer {
   Content: string;
@@ -25,12 +33,12 @@ export interface ICreateQuestionData {
 }
 
 export function getNewAnswer(IsCorrect = false): IAnswer {
-  return { Id: uuidv4(), Content: '', IsCorrect: IsCorrect };
+  return { Id: uuidv4(), Content: "", IsCorrect: IsCorrect };
 }
 
 export function getInitilizedData(): ICreateQuestionData {
   return {
-    QuestionContent: '',
+    QuestionContent: "",
     Answers: [
       getNewAnswer(true),
       getNewAnswer(),
@@ -38,18 +46,18 @@ export function getInitilizedData(): ICreateQuestionData {
       getNewAnswer(),
     ],
     Explanation: null,
-    ExplanationAllow: false,
+    ExplanationAllow: true,
     ImageFile: null,
     AudioFile: null,
-    DifficultLevelId: '',
-    EducationLevelId: '',
-    LanguageId: '',
-    QuestionType: '',
-    SubjectId: '',
-    SubSubjectId: '',
-    PointId: '',
-    PenaltyPointId: '',
-    UserId: '',
+    DifficultLevelId: "",
+    EducationLevelId: "",
+    LanguageId: "",
+    QuestionType: "",
+    SubjectId: "",
+    SubSubjectId: "",
+    PointId: "",
+    PenaltyPointId: "",
+    UserId: "",
   };
 }
 
@@ -61,4 +69,30 @@ export enum ActionEnum {
   ChangeExplanationAllow,
   ChangeQuestionContent,
   ChangeExplanation,
+}
+
+export interface IQuestionMetadata {
+  difficultLevels: IDifficultLevel[];
+  educationLevels: IEducationLevel[];
+  subjects: ISubject[];
+  subSubjects: ISubSubject[];
+  questionTypes: IQuestionType[];
+  languages: ILanguage[];
+  points: IPoint[];
+  penaltyPoints: IPoint[];
+  books: IBook[];
+}
+
+export function getInitilizedQuestionMetadata(): IQuestionMetadata {
+  return {
+    difficultLevels: [],
+    educationLevels: [],
+    subjects: [],
+    subSubjects: [],
+    questionTypes: [],
+    languages: [],
+    points: [],
+    penaltyPoints: [],
+    books: [],
+  };
 }

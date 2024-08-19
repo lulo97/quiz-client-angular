@@ -11,16 +11,16 @@ import { MyToastService } from "../../../../services/my-toast.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BACKEND_URL, handleSort } from "../../../../utils/utils";
 import { FormsModule } from "@angular/forms";
-import { empty_record, IEducationLevel } from "./utils";
+import { empty_record, IBook } from "./utils";
 import { DatePipe } from "@angular/common";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { CRUD_ACTION } from "../../utils";
 
-const SELECTOR = "EducationLevel";
-const TEMPLATE_URL = "./education-level.html";
+const SELECTOR = "Book";
+const TEMPLATE_URL = "./book.html";
 const _SCREEN = {
-  NAME_VI: "Trình độ học vấn",
-  NAME_EN: "EducationLevel",
+  NAME_VI: "Sách giáo khoa",
+  NAME_EN: "Book",
 };
 
 @Component({
@@ -48,7 +48,7 @@ const _SCREEN = {
     `,
   ],
 })
-export class EducationLevel {
+export class Book {
   IsFirstRender = true;
   SCREEN = _SCREEN;
   @ViewChild("mydt") mydt: Table | undefined;
@@ -60,8 +60,8 @@ export class EducationLevel {
   };
   name: string = "";
   description: string = "";
-  datas: IEducationLevel[] = [];
-  selected_record: IEducationLevel = empty_record;
+  datas: IBook[] = [];
+  selected_record: IBook = empty_record;
 
   constructor(private toast: MyToastService, private http: HttpClient) {}
 
@@ -72,9 +72,6 @@ export class EducationLevel {
   ngAfterViewInit() {
     this.handleGetAll();
   }
-
-  //Import function from utils.ts and assign it to a field in class
-  _handleSort = handleSort;
 
   resetAfter(action: CRUD_ACTION) {
     this.handleGetAll();
@@ -93,6 +90,10 @@ export class EducationLevel {
       this.VISIBLE_DIALOG.DELETE = false;
     }
   }
+
+  //Import function from utils.ts and assign it to a field in class
+  _handleSort = handleSort;
+
   handleFilterGlobal(event: any, stringVal: any) {
     this.mydt!.filterGlobal(
       (event.target as HTMLInputElement).value,
@@ -115,6 +116,7 @@ export class EducationLevel {
       },
       error: (error) => {
         this.toast.changeLoading("error", "Lỗi máy chủ!");
+
         console.error(error);
       },
     });
@@ -124,19 +126,19 @@ export class EducationLevel {
     this.VISIBLE_DIALOG.CREATE = true;
   }
 
-  handleOpenRead(selected_record: IEducationLevel) {
+  handleOpenRead(selected_record: IBook) {
     this.VISIBLE_DIALOG.READ = true;
     this.selected_record = selected_record;
   }
 
-  handleOpenEdit(selected_record: IEducationLevel) {
+  handleOpenEdit(selected_record: IBook) {
     this.VISIBLE_DIALOG.EDIT = true;
     this.selected_record = selected_record;
     this.name = selected_record.name;
     this.description = selected_record.description;
   }
 
-  handleOpenDelete(selected_record: IEducationLevel) {
+  handleOpenDelete(selected_record: IBook) {
     this.VISIBLE_DIALOG.DELETE = true;
     this.selected_record = selected_record;
   }
@@ -172,10 +174,9 @@ export class EducationLevel {
       return;
     }
     const url =
-      BACKEND_URL +
-      `${this.SCREEN.NAME_EN}/${this.selected_record.educationLevelId}`;
+      BACKEND_URL + `${this.SCREEN.NAME_EN}/${this.selected_record.bookId}`;
     const body = {
-      educationLevelId: this.selected_record.educationLevelId,
+      bookId: this.selected_record.bookId,
       name: this.name,
       description: this.description,
       createdAt: this.selected_record.createdAt,
@@ -196,13 +197,8 @@ export class EducationLevel {
   }
 
   handleDelete() {
-    if (this.selected_record.subSubjects.length > 0) {
-      this.toast.showWarning("Trình đọc học vấn có Chương phụ thuộc!");
-      return;
-    }
     const url =
-      BACKEND_URL +
-      `${this.SCREEN.NAME_EN}/${this.selected_record.educationLevelId}`;
+      BACKEND_URL + `${this.SCREEN.NAME_EN}/${this.selected_record.bookId}`;
     const result = this.http.delete(url);
     result.subscribe({
       complete: () => {

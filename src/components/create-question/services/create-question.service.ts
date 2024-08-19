@@ -1,7 +1,14 @@
-import { Injectable } from '@angular/core';
-import { getNewAnswer, getInitilizedData, ActionEnum } from '../utils/utils';
-import { BehaviorSubject } from 'rxjs';
-import { MyToastService } from '../../../services/my-toast.service';
+import { Injectable } from "@angular/core";
+import {
+  getNewAnswer,
+  getInitilizedData,
+  ActionEnum,
+  getInitilizedQuestionMetadata,
+} from "../utils/utils";
+import { BehaviorSubject } from "rxjs";
+import { MyToastService } from "../../../services/my-toast.service";
+import { BACKEND_URL } from "../../../utils/utils";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
 //Available in application, don't have to import in any component
 //Only have one instance in application
@@ -13,21 +20,28 @@ import { MyToastService } from '../../../services/my-toast.service';
 //Each component imported it have own instance of this service
 //@Injectable()
 
-const MC: string = 'MutipleChoice';
-const SC: string = 'SingleChoice';
-const QuestionType: string = 'SingleChoice';
+const MC: string = "MutipleChoice";
+const SC: string = "SingleChoice";
+const QuestionType: string = "SingleChoice";
+export const CREATE_QUESTION_CONTROLLER = "CreateQuestion";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class CreateQuestionService {
-  constructor(public toast: MyToastService) {}
+  constructor(public toast: MyToastService, private http: HttpClient) {}
+
   public data = new BehaviorSubject(getInitilizedData());
 
-  public changeData(action: ActionEnum, payload: any) {
+  public questionMetadata = new BehaviorSubject(
+    getInitilizedQuestionMetadata()
+  );
+  public questionMetadata$ = this.questionMetadata.asObservable();
+
+  public handleAction(action: ActionEnum, payload: any) {
     const old_data = this.data.value;
     switch (action) {
       case ActionEnum.AddAnswer: {
         if (old_data.Answers.length >= 8) {
-          this.toast.showWarning('Tối đa 8 lựa chọn!');
+          this.toast.showWarning("Tối đa 8 lựa chọn!");
           return;
         }
         //Ensure to create new array, directly assign will only reference
@@ -52,7 +66,7 @@ export class CreateQuestionService {
       }
       case ActionEnum.DeleteAnswer: {
         if (old_data.Answers.length <= 2) {
-          this.toast.showWarning('Cần ít nhất 2 lựa chọn!');
+          this.toast.showWarning("Cần ít nhất 2 lựa chọn!");
           return;
         }
         const Id: string = payload;

@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
-import { CheckboxModule } from 'primeng/checkbox';
-import { CreateQuestionService } from './services/create-question.service';
-import { getNewAnswer, IAnswer } from './utils/utils';
-import { MyToastService } from '../../services/my-toast.service';
-import { ActionEnum } from './utils/utils';
+import { Component, Input, OnInit } from "@angular/core";
+import { InputTextModule } from "primeng/inputtext";
+import { FormsModule } from "@angular/forms";
+import { CheckboxModule } from "primeng/checkbox";
+import { CreateQuestionService } from "../services/create-question.service";
+import { getNewAnswer, IAnswer } from "../utils/utils";
+import { MyToastService } from "../../../services/my-toast.service";
+import { ActionEnum } from "../utils/utils";
 
 /*
 p-radioButton
@@ -20,14 +20,14 @@ In current answer:
 */
 
 @Component({
-  selector: 'Answer',
+  selector: "Answer",
   standalone: true,
   imports: [FormsModule, CheckboxModule, InputTextModule],
   template: `
     <div class="flex justify-content-between align-content-center gap-3">
       <p-checkbox
         (click)="
-          service.changeData(
+          service.handleAction(
             ActionEnum.ChangeAnswerIsCorrect,
             current_answer.Id
           )
@@ -43,7 +43,9 @@ In current answer:
         (change)="handleChange($event)"
       />
       <i
-        (click)="service.changeData(ActionEnum.DeleteAnswer, current_answer.Id)"
+        (click)="
+          service.handleAction(ActionEnum.DeleteAnswer, current_answer.Id)
+        "
         class="cursor-pointer hover:text-red-500 pi pi-trash text-xl text-red-300 h-fit my-auto"
       ></i>
     </div>
@@ -51,7 +53,7 @@ In current answer:
 })
 export class Answer implements OnInit {
   ActionEnum = ActionEnum;
-  @Input() Id: string = '';
+  @Input() Id: string = "";
   current_answer: IAnswer = getNewAnswer();
 
   //Constructor is mainly using for Dependency Injection
@@ -63,7 +65,7 @@ export class Answer implements OnInit {
 
   ngOnInit() {
     if (!this.Id) {
-      this.toast.showWarning('Id trống!');
+      this.toast.showWarning("Id trống!");
     }
     const find_answer = this.service.data.value.Answers.find(
       (ele) => ele.Id == this.Id
@@ -78,7 +80,7 @@ export class Answer implements OnInit {
   handleChange(event: Event) {
     const event_html_input = event.target as HTMLInputElement;
     this.current_answer.Content = event_html_input.value;
-    this.service.changeData(ActionEnum.ChangeAnswerContent, {
+    this.service.handleAction(ActionEnum.ChangeAnswerContent, {
       Id: this.current_answer.Id,
       NewContent: event_html_input.value,
     });

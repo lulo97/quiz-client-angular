@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { TabMenuModule } from 'primeng/tabmenu';
-import { MenuItem } from 'primeng/api';
-import { CommonModule } from '@angular/common';
-import { TabAudio } from '../setting-tabs/tab-audio';
-import { TabGeneral } from '../setting-tabs/tab-general';
-import { TabImage } from '../setting-tabs/tab-image';
+import { Component, OnInit } from "@angular/core";
+import { ButtonModule } from "primeng/button";
+import { DialogModule } from "primeng/dialog";
+import { TabMenuModule } from "primeng/tabmenu";
+import { MenuItem } from "primeng/api";
+import { CommonModule } from "@angular/common";
+import { TabAudio } from "../setting-tabs/tab-audio";
+import { TabSelectMetadata } from "../setting-tabs/tab-general";
+import { TabImage } from "../setting-tabs/tab-image";
 
 @Component({
-  selector: 'ModalSetting',
+  selector: "ModalSetting",
   standalone: true,
   imports: [
     ButtonModule,
@@ -18,7 +18,7 @@ import { TabImage } from '../setting-tabs/tab-image';
     CommonModule,
     TabImage,
     TabAudio,
-    TabGeneral,
+    TabSelectMetadata,
   ],
   template: `
     <p-button (onClick)="showDialog()" icon="pi pi-cog" label="Cài đặt" />
@@ -34,7 +34,9 @@ import { TabImage } from '../setting-tabs/tab-image';
         <ng-container *ngIf="activeItem">
           <TabImage *ngIf="activeItem.label === 'Ảnh'"></TabImage>
           <TabAudio *ngIf="activeItem.label === 'Âm thanh'"></TabAudio>
-          <TabGeneral *ngIf="activeItem.label === 'Chung'"></TabGeneral>
+          <TabSelectMetadata
+            *ngIf="activeItem.label === 'Chung'"
+          ></TabSelectMetadata>
         </ng-container>
       </div>
     </p-dialog>
@@ -47,9 +49,9 @@ export class ModalSetting implements OnInit {
 
   ngOnInit() {
     this.items = [
-      { label: 'Chung', icon: 'pi pi-clog' },
-      { label: 'Ảnh', icon: 'pi pi-image' },
-      { label: 'Âm thanh', icon: 'pi pi-volume-up' },
+      { label: "Chung", icon: "pi pi-clog" },
+      { label: "Ảnh", icon: "pi pi-image" },
+      { label: "Âm thanh", icon: "pi pi-volume-up" },
     ];
     this.activeItem = this.items[0]; // Default to the first tab
   }

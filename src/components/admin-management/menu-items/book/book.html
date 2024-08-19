@@ -149,7 +149,7 @@
     <ng-template pTemplate="body">
       <tr>
         <td>Mã</td>
-        <td>{{ selected_record.difficultLevelId }}</td>
+        <td>{{ selected_record.bookId }}</td>
       </tr>
       <tr>
         <td>Tên</td>
@@ -195,7 +195,7 @@
       <label for="id" class="font-semibold w-6rem">Mã</label>
       <input
         disabled="true"
-        [ngModel]="selected_record.difficultLevelId"
+        [ngModel]="selected_record.bookId"
         pInputText
         id="id"
         class="flex-auto"

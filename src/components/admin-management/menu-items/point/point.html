@@ -54,7 +54,6 @@
 <ng-template #tableSection>
   <p-table
     #mydt
-    sortField="value"
     [sortOrder]="1"
     (sortFunction)="_handleSort($event)"
     [customSort]="true"
@@ -75,7 +74,7 @@
           <p-columnFilter
             showMatchModes="false"
             showApplyButton="false"
-            showClearButton="false"
+            showClearButton="true"
             showOperator="false"
             showAddButton="false"
             field="isPenalty"

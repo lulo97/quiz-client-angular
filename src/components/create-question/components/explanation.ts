@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { CreateQuestionService } from './services/create-question.service';
-import { ActionEnum } from './utils/utils';
+import { Component } from "@angular/core";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { CreateQuestionService } from "../services/create-question.service";
+import { ActionEnum } from "../utils/utils";
 
 @Component({
-  selector: 'Explanation',
+  selector: "Explanation",
   standalone: true,
   imports: [FormsModule, CommonModule, InputTextareaModule],
   template: `
@@ -27,6 +27,6 @@ export class Explanation {
   handleChange(event: Event) {
     const event_html_input = event.target as HTMLInputElement;
     const NewExplanation = event_html_input.value;
-    this.service.changeData(ActionEnum.ChangeExplanation, NewExplanation);
+    this.service.handleAction(ActionEnum.ChangeExplanation, NewExplanation);
   }
 }
