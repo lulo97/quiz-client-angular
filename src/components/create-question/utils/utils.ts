@@ -7,6 +7,7 @@ import { IQuestionType } from "../../admin-management/menu-items/question-type/u
 import { ILanguage } from "../../admin-management/menu-items/language/utils";
 import { IPoint } from "../../admin-management/menu-items/point/utils";
 import { IBook } from "../../admin-management/menu-items/book/utils";
+import { empty_select_item, ISelectItem } from "../selects/utils";
 
 export interface IAnswer {
   Content: string;
@@ -36,7 +37,7 @@ export function getNewAnswer(IsCorrect = false): IAnswer {
   return { Id: uuidv4(), Content: "", IsCorrect: IsCorrect };
 }
 
-export function getInitilizedData(): ICreateQuestionData {
+export function getRawData(): ICreateQuestionData {
   return {
     QuestionContent: "",
     Answers: [
@@ -69,9 +70,20 @@ export enum ActionEnum {
   ChangeExplanationAllow,
   ChangeQuestionContent,
   ChangeExplanation,
+  ChangeSelectBook,
+  ChangeSelectDifficultLevel,
+  ChangeSelectEducationLevel,
+  ChangeSelectQuestionType,
+  ChangeSelectLanguage,
+  ChangeSelectSubject,
+  ChangeSelectSubSubject,
+  ChangeSelectPoint,
+  ChangeSelectPenaltyPoint,
+  ChangeFileImage,
+  ChangeFileAudio,
 }
 
-export interface IQuestionMetadata {
+export interface IMetadata {
   difficultLevels: IDifficultLevel[];
   educationLevels: IEducationLevel[];
   subjects: ISubject[];
@@ -83,7 +95,7 @@ export interface IQuestionMetadata {
   books: IBook[];
 }
 
-export function getInitilizedQuestionMetadata(): IQuestionMetadata {
+export function getRawMetadata(): IMetadata {
   return {
     difficultLevels: [],
     educationLevels: [],
@@ -94,5 +106,31 @@ export function getInitilizedQuestionMetadata(): IQuestionMetadata {
     points: [],
     penaltyPoints: [],
     books: [],
+  };
+}
+
+export interface ISelectedMetadata {
+  difficultLevel: ISelectItem;
+  educationLevel: ISelectItem;
+  subject: ISelectItem;
+  subSubject: ISelectItem;
+  questionType: ISelectItem;
+  language: ISelectItem;
+  point: ISelectItem;
+  penaltyPoint: ISelectItem;
+  book: ISelectItem;
+}
+
+export function getRawSelectedMetadata(): ISelectedMetadata {
+  return {
+    difficultLevel: empty_select_item,
+    educationLevel: empty_select_item,
+    subject: empty_select_item,
+    subSubject: empty_select_item,
+    questionType: empty_select_item,
+    language: empty_select_item,
+    point: empty_select_item,
+    penaltyPoint: empty_select_item,
+    book: empty_select_item,
   };
 }

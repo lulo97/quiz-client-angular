@@ -33,3 +33,9 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

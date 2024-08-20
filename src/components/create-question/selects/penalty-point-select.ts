@@ -13,14 +13,14 @@ import { ISelectItem } from "./utils";
     <p-dropdown
       appendTo="body"
       [options]="datas"
-      [(ngModel)]="selected_record"
+      [(ngModel)]="service.selectedMetadata.value.penaltyPoint"
       [showClear]="true"
       [editable]="false"
       [filter]="true"
       [virtualScroll]="true"
       [virtualScrollItemSize]="40"
       [style]="{ 'min-width': '20rem', width: '100%' }"
-      optionLabel="name"
+      optionLabel="value"
       placeholder="Chọn điểm phạt..."
     />
   `,
@@ -29,14 +29,14 @@ export class PenaltyPointSelect {
   constructor(public service: CreateQuestionService) {}
 
   datas: ISelectItem[] = [];
-  selected_record: ISelectItem | undefined = undefined;
 
   ngOnInit(): void {
-    this.service.questionMetadata$.subscribe((response) => {
+    this.service.metadata$.subscribe((response) => {
       if (response) {
         this.datas = response.penaltyPoints.map((ele) => ({
-          code: ele.pointId,
-          name: ele.value,
+          id: ele.pointId,
+          name: "",
+          value: ele.value,
         }));
       }
     });

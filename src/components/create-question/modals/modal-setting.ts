@@ -5,7 +5,7 @@ import { TabMenuModule } from "primeng/tabmenu";
 import { MenuItem } from "primeng/api";
 import { CommonModule } from "@angular/common";
 import { TabAudio } from "../setting-tabs/tab-audio";
-import { TabSelectMetadata } from "../setting-tabs/tab-general";
+import { TabSelectMetadata } from "../setting-tabs/tab-select-metadata";
 import { TabImage } from "../setting-tabs/tab-image";
 
 @Component({
@@ -29,16 +29,14 @@ import { TabImage } from "../setting-tabs/tab-image";
       [style]="{ width: '90vw', height: '90vh' }"
       [dismissableMask]="true"
     >
-      <div class="h-full">
-        <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
-        <ng-container *ngIf="activeItem">
-          <TabImage *ngIf="activeItem.label === 'Ảnh'"></TabImage>
-          <TabAudio *ngIf="activeItem.label === 'Âm thanh'"></TabAudio>
-          <TabSelectMetadata
-            *ngIf="activeItem.label === 'Chung'"
-          ></TabSelectMetadata>
-        </ng-container>
-      </div>
+      <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+      <ng-container *ngIf="activeItem">
+        <TabImage *ngIf="activeItem.label === 'Ảnh'"></TabImage>
+        <TabAudio *ngIf="activeItem.label === 'Âm thanh'"></TabAudio>
+        <TabSelectMetadata
+          *ngIf="activeItem.label === 'Chung'"
+        ></TabSelectMetadata>
+      </ng-container>
     </p-dialog>
   `,
 })
