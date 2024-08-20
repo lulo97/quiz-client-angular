@@ -25,18 +25,17 @@ import { BookSelect } from "../selects/book-select";
   ],
   template: `
     <div class="grid row-gap-4 col-gap-4 mt-2">
-      <div class="col flex flex-column gap-4">
-        <DifficultLevelSelect></DifficultLevelSelect>
-        <EducationLevelSelect></EducationLevelSelect>
-        <QuestionTypeSelect></QuestionTypeSelect>
-        <LanguageSelect></LanguageSelect>
+      <div class="col flex flex-column gap-2">
         <BookSelect></BookSelect>
-      </div>
-      <div class="col flex flex-column gap-4">
-        <PenaltyPointSelect></PenaltyPointSelect>
-        <PointSelect></PointSelect>
+        <EducationLevelSelect></EducationLevelSelect>
         <SubjectSelect></SubjectSelect>
         <SubSubjectSelect></SubSubjectSelect>
+      </div>
+      <div class="col flex flex-column gap-2">
+        <DifficultLevelSelect></DifficultLevelSelect>
+        <LanguageSelect></LanguageSelect>
+        <PointSelect></PointSelect>
+        <PenaltyPointSelect></PenaltyPointSelect>
       </div>
     </div>
   `,

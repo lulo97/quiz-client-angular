@@ -4,6 +4,8 @@ import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
 import { CommonModule } from "@angular/common";
+import { ActionEnum } from "../utils/utils";
+import { compareIgnore } from "../../../utils/utils";
 
 @Component({
   selector: "BookSelect",
@@ -15,7 +17,7 @@ import { CommonModule } from "@angular/common";
       [editable]="false"
       appendTo="body"
       [options]="datas"
-      [(ngModel)]="selected_record"
+      [(ngModel)]="service.selectedMetadata.value.book"
       [showClear]="true"
       [filter]="true"
       [virtualScroll]="true"
@@ -30,20 +32,20 @@ export class BookSelect {
   constructor(public service: CreateQuestionService) {}
 
   datas: ISelectItem[] = [];
-  selected_record: ISelectItem | undefined = undefined;
 
   ngOnInit(): void {
-    this.service.questionMetadata$.subscribe((response) => {
+    this.service.metadata$.subscribe((response) => {
       if (response) {
         this.datas = response.books.map((ele) => ({
-          code: ele.bookId,
+          id: ele.bookId,
           name: ele.name,
+          value: 0,
         }));
-        const find_record = this.datas.find(
-          (ele) => ele.name.toString().toLowerCase() == DEFAULT_METADATA.BOOK
+        const find_record = this.datas.find((ele) =>
+          compareIgnore(ele.name, DEFAULT_METADATA.BOOK)
         );
         if (find_record) {
-          this.selected_record = find_record;
+          this.service.handleAction(ActionEnum.ChangeSelectBook, find_record);
         }
       }
     });

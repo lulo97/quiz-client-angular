@@ -5,6 +5,8 @@ import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
 import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
+import { ActionEnum } from "../utils/utils";
+import { compareIgnore } from "../../../utils/utils";
 
 @Component({
   selector: "DifficultLevelSelect",
@@ -15,7 +17,7 @@ import { Subscription } from "rxjs";
     <p-dropdown
       appendTo="body"
       [options]="datas"
-      [(ngModel)]="selected_record"
+      [(ngModel)]="service.selectedMetadata.value.difficultLevel"
       [showClear]="true"
       [editable]="false"
       [filter]="true"
@@ -31,22 +33,23 @@ export class DifficultLevelSelect {
   constructor(public service: CreateQuestionService) {}
 
   datas: ISelectItem[] = [];
-  selected_record: ISelectItem | undefined = undefined;
 
   ngOnInit(): void {
-    this.service.questionMetadata$.subscribe((response) => {
+    this.service.metadata$.subscribe((response) => {
       if (response) {
         this.datas = response.difficultLevels.map((ele) => ({
-          code: ele.difficultLevelId,
+          id: ele.difficultLevelId,
           name: ele.name,
+          value: 0,
         }));
-        const find_record = this.datas.find(
-          (ele) =>
-            ele.name.toString().toLowerCase() ==
-            DEFAULT_METADATA.DIFFICULT_LEVEL
+        const find_record = this.datas.find((ele) =>
+          compareIgnore(ele.name, DEFAULT_METADATA.DIFFICULT_LEVEL)
         );
         if (find_record) {
-          this.selected_record = find_record;
+          this.service.handleAction(
+            ActionEnum.ChangeSelectDifficultLevel,
+            find_record
+          );
         }
       }
     });

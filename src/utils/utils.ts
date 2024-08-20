@@ -41,3 +41,11 @@ export function handleSort(event: SortEvent) {
     return order;
   });
 }
+
+export function capitalizeFirstWord(str: string) {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
+export function compareIgnore(a: any, b: any) {
+  return a.toString().toLowerCase() == b.toString().toLowerCase();
+}

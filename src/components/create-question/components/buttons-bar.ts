@@ -20,10 +20,16 @@ import { ActionEnum } from "../utils/utils";
           label="Lựa chọn"
         />
         <p-button
+          [raised]="true"
+          [severity]="
+            service.data.value.ExplanationAllow ? 'danger' : 'primary'
+          "
           (click)="
             service.handleAction(ActionEnum.ChangeExplanationAllow, null)
           "
-          icon="pi pi-plus"
+          [icon]="
+            service.data.value.ExplanationAllow ? 'pi pi-minus' : 'pi pi-plus'
+          "
           label="Giải thích"
         />
         <ModalSetting></ModalSetting>

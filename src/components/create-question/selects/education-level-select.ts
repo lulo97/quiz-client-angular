@@ -3,6 +3,8 @@ import { DropdownModule } from "primeng/dropdown";
 import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
+import { ActionEnum } from "../utils/utils";
+import { compareIgnore } from "../../../utils/utils";
 
 @Component({
   selector: "EducationLevelSelect",
@@ -13,7 +15,7 @@ import { DEFAULT_METADATA, ISelectItem } from "./utils";
     <p-dropdown
       appendTo="body"
       [options]="datas"
-      [(ngModel)]="selected_record"
+      [(ngModel)]="service.selectedMetadata.value.educationLevel"
       [showClear]="true"
       [editable]="false"
       [filter]="true"
@@ -29,22 +31,23 @@ export class EducationLevelSelect {
   constructor(public service: CreateQuestionService) {}
 
   datas: ISelectItem[] = [];
-  selected_record: ISelectItem | undefined = undefined;
 
   ngOnInit(): void {
-    this.service.questionMetadata$.subscribe((response) => {
+    this.service.metadata$.subscribe((response) => {
       if (response) {
         this.datas = response.educationLevels.map((ele) => ({
-          code: ele.educationLevelId,
+          id: ele.educationLevelId,
           name: ele.name,
+          value: 0,
         }));
-        const find_record = this.datas.find(
-          (ele) =>
-            ele.name.toString().toLowerCase() ==
-            DEFAULT_METADATA.EDUCATION_LEVEL
+        const find_record = this.datas.find((ele) =>
+          compareIgnore(ele.name, DEFAULT_METADATA.EDUCATION_LEVEL)
         );
         if (find_record) {
-          this.selected_record = find_record;
+          this.service.handleAction(
+            ActionEnum.ChangeSelectEducationLevel,
+            find_record
+          );
         }
       }
     });
