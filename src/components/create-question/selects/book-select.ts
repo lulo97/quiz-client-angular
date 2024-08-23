@@ -4,11 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
 import { CommonModule } from "@angular/common";
-<<<<<<< HEAD
 import { ActionEnum } from "../utils/enums";
-=======
-import { ActionEnum } from "../utils/utils";
->>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 import { compareIgnore } from "../../../utils/utils";
 
 @Component({
@@ -21,12 +17,7 @@ import { compareIgnore } from "../../../utils/utils";
       [editable]="false"
       appendTo="body"
       [options]="datas"
-<<<<<<< HEAD
       [(ngModel)]="service.data.value.book"
-=======
-      [(ngModel)]="service.selectedMetadata.value.book"
-      [showClear]="true"
->>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
       [filter]="true"
       [virtualScroll]="true"
       [virtualScrollItemSize]="40"

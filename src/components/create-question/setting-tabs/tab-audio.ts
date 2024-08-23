@@ -1,11 +1,7 @@
 import { FileUploadModule, UploadEvent } from "primeng/fileupload";
 import { Component } from "@angular/core";
 import { CreateQuestionService } from "../services/create-question.service";
-<<<<<<< HEAD
 import { ActionEnum } from "../utils/enums";
-=======
-import { ActionEnum } from "../utils/utils";
->>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 import { CommonModule } from "@angular/common";
 
 @Component({
