@@ -7,7 +7,11 @@ import {
   ToggleButtonChangeEvent,
   ToggleButtonModule,
 } from "primeng/togglebutton";
+<<<<<<< HEAD
 import { ActionEnum } from "../utils/enums";
+=======
+import { ActionEnum } from "../utils/utils";
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 import { DEFAULT_METADATA } from "../selects/utils";
 import { capitalizeFirstWord } from "../../../utils/utils";
 
@@ -53,7 +57,11 @@ export class Answers {
   onLabel = capitalizeFirstWord(DEFAULT_METADATA.QUESTION_TYPE.SINGLE_NAME);
   offLabel = capitalizeFirstWord(DEFAULT_METADATA.QUESTION_TYPE.MUTIPLE_NAME);
 
+<<<<<<< HEAD
   checked = DEFAULT_METADATA.QUESTION_TYPE.MUTIPLE_VALUE;
+=======
+  checked = DEFAULT_METADATA.QUESTION_TYPE.SINGLE_VALUE;
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
   handleChangeToggle(event: ToggleButtonChangeEvent) {
     this.service.handleAction(

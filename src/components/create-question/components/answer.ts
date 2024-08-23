@@ -7,15 +7,22 @@ import {
 } from "@angular/core";
 import { InputTextModule } from "primeng/inputtext";
 import { FormsModule } from "@angular/forms";
-import { CheckboxModule } from "primeng/checkbox";
+import { CheckboxChangeEvent, CheckboxModule } from "primeng/checkbox";
 import { CreateQuestionService } from "../services/create-question.service";
 import { getNewAnswer } from "../utils/utils";
 import { MyToastService } from "../../../services/my-toast.service";
+<<<<<<< HEAD
 import { ActionEnum } from "../utils/enums";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { CommonModule } from "@angular/common";
 import { DEFAULT_METADATA } from "../selects/utils";
 import { IAnswer } from "../utils/interfaces";
+=======
+import { ActionEnum } from "../utils/utils";
+import { RadioButtonModule } from "primeng/radiobutton";
+import { CommonModule } from "@angular/common";
+import { DEFAULT_METADATA } from "../selects/utils";
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
 /*
 p-radioButton
@@ -65,7 +72,10 @@ In current answer:
         class="w-full"
         type="text"
         pInputText
+<<<<<<< HEAD
         [value]="current_answer.Content"
+=======
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
         (change)="handleChangeAnswerContent($event)"
       />
       <i

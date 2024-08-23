@@ -13,7 +13,11 @@ import { ISelectItem } from "./utils";
     <p-dropdown
       appendTo="body"
       [options]="datas"
+<<<<<<< HEAD
       [(ngModel)]="service.data.value.penaltyPoint"
+=======
+      [(ngModel)]="service.selectedMetadata.value.penaltyPoint"
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
       [showClear]="true"
       [editable]="false"
       [filter]="true"

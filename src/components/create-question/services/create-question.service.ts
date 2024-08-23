@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+<<<<<<< HEAD
 import { getNewAnswer, getRawData, getRawMetadata } from "../utils/utils";
 import { BehaviorSubject } from "rxjs";
 import { MyToastService } from "../../../services/my-toast.service";
@@ -12,6 +13,20 @@ import { AuthenticationService } from "../../../services/authentication.service"
 import { ActionEnum } from "../utils/enums";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ICreateQuestionPOST } from "../utils/interfaces";
+=======
+import {
+  getNewAnswer,
+  getRawData,
+  ActionEnum,
+  getRawMetadata,
+  IAnswer,
+  getRawSelectedMetadata,
+} from "../utils/utils";
+import { BehaviorSubject } from "rxjs";
+import { MyToastService } from "../../../services/my-toast.service";
+import { DEFAULT_METADATA, ISelectItem } from "../selects/utils";
+import { compareIgnore } from "../../../utils/utils";
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
 //Available in application, don't have to import in any component
 //Only have one instance in application
@@ -31,25 +46,43 @@ Angular component can rerender if new object is detected:
   + const obj = old_obj.map(ele => ele) //New parent object (obj) but child object (ele) inside parent object still reference 
 */
 
+<<<<<<< HEAD
+=======
+const MC: string = "MutipleChoice";
+const SC: string = "SingleChoice";
+const QuestionType: string = MC;
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 export const CREATE_QUESTION_CONTROLLER = "CreateQuestion";
 
 @Injectable({ providedIn: "root" })
 export class CreateQuestionService {
+<<<<<<< HEAD
   constructor(
     private toast: MyToastService,
     private authService: AuthenticationService,
     private http: HttpClient
   ) {}
+=======
+  constructor(public toast: MyToastService) {}
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
   public data = new BehaviorSubject(getRawData());
   public data$ = this.data.asObservable();
 
   public metadata = new BehaviorSubject(getRawMetadata());
   public metadata$ = this.metadata.asObservable();
+<<<<<<< HEAD
+=======
+
+  public selectedMetadata = new BehaviorSubject(getRawSelectedMetadata());
+  public selectedMetadata$ = this.selectedMetadata.asObservable();
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
   public handleAction(action: ActionEnum, payload: any) {
     const old_data = this.data.value;
+    const old_selectedMetadata = this.selectedMetadata.value;
     switch (action) {
+<<<<<<< HEAD
       case ActionEnum.ConfirmCreate: {
         let isError = false;
         if (!old_data.QuestionContent) {
@@ -168,6 +201,8 @@ export class CreateQuestionService {
         this.data.next({ ...old_data, UserId: UserId });
         break;
       }
+=======
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
       case ActionEnum.ChangeFileImage: {
         const file = payload;
         this.data.next({ ...old_data, ImageFile: file });
@@ -180,44 +215,72 @@ export class CreateQuestionService {
       }
       case ActionEnum.ChangeSelectBook: {
         const book: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({ ...old_data, book: book });
+=======
+        this.selectedMetadata.next({ ...old_selectedMetadata, book: book });
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
         break;
       }
       case ActionEnum.ChangeSelectDifficultLevel: {
         const difficultLevel: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           difficultLevel: difficultLevel,
         });
         break;
       }
       case ActionEnum.ChangeSelectEducationLevel: {
         const educationLevel: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           educationLevel: educationLevel,
         });
         break;
       }
       case ActionEnum.ChangeSelectLanguage: {
         const language: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           language: language,
         });
         break;
       }
       case ActionEnum.ChangeSelectPenaltyPoint: {
         const penaltyPoint: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           penaltyPoint: penaltyPoint,
         });
         break;
       }
       case ActionEnum.ChangeSelectPoint: {
         const point: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({ ...old_data, point: point });
+=======
+        this.selectedMetadata.next({ ...old_selectedMetadata, point: point });
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
         break;
       }
       case ActionEnum.ChangeSelectQuestionType: {
@@ -265,25 +328,45 @@ export class CreateQuestionService {
           });
         }
 
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
           Answers: NewAnswers,
           questionType: questionType,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+          questionType: questionType,
+        });
+        this.data.next({
+          ...old_data,
+          Answers: NewAnswers,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
         });
         break;
       }
       case ActionEnum.ChangeSelectSubSubject: {
         const subSubject: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           subSubject: subSubject,
         });
         break;
       }
       case ActionEnum.ChangeSelectSubject: {
         const subject: ISelectItem = payload;
+<<<<<<< HEAD
         this.data.next({
           ...old_data,
+=======
+        this.selectedMetadata.next({
+          ...old_selectedMetadata,
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
           subject: subject,
         });
         break;
@@ -303,7 +386,12 @@ export class CreateQuestionService {
       }
       case ActionEnum.ChangeAnswerIsCorrect: {
         const Id: string = payload;
+<<<<<<< HEAD
         const CurrentQuestionType = this.data.value.questionType.name;
+=======
+        const CurrentQuestionType =
+          this.selectedMetadata.value.questionType.name;
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
         const IsSingleChoice = compareIgnore(
           CurrentQuestionType,
           DEFAULT_METADATA.QUESTION_TYPE.SINGLE_NAME

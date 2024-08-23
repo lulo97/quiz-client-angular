@@ -5,7 +5,11 @@ import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
 import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
+<<<<<<< HEAD
 import { ActionEnum } from "../utils/enums";
+=======
+import { ActionEnum } from "../utils/utils";
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 import { compareIgnore } from "../../../utils/utils";
 
 @Component({
@@ -17,7 +21,11 @@ import { compareIgnore } from "../../../utils/utils";
     <p-dropdown
       appendTo="body"
       [options]="datas"
+<<<<<<< HEAD
       [(ngModel)]="service.data.value.difficultLevel"
+=======
+      [(ngModel)]="service.selectedMetadata.value.difficultLevel"
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
       [showClear]="true"
       [editable]="false"
       [filter]="true"

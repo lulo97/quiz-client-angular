@@ -3,7 +3,10 @@ import { RouterOutlet } from "@angular/router";
 import { LayoutHeader } from "../layout/layout-header";
 import { LayoutBody } from "../layout/layout-body";
 import { ToastModule } from "primeng/toast";
+<<<<<<< HEAD
 import { AuthenticationService } from "../services/authentication.service";
+=======
+>>>>>>> a425177170afafb3bcb78b5f75eba04580c4e3af
 
 @Component({
   selector: "app-root",
