@@ -10,7 +10,9 @@ import {
 import { BACKEND_URL } from "../../utils/utils";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { MyToastService } from "../../services/my-toast.service";
-import { ActionEnum, IMetadata } from "./utils/utils";
+import { ActionEnum } from "./utils/enums";
+import { IMetadata } from "./utils/interfaces";
+import { AuthenticationService } from "../../services/authentication.service";
 
 @Component({
   selector: "CreateQuestion",
@@ -31,14 +33,22 @@ export class CreateQuestion {
   constructor(
     public service: CreateQuestionService,
     private http: HttpClient,
-    private toast: MyToastService
-  ) {
+    private toast: MyToastService,
+    private authService: AuthenticationService
+  ) {}
+
+  ngOnInit() {
     this.handleGetMetadata();
+    this.handleSetUserId();
+  }
+
+  public handleSetUserId() {
+    this.service.handleAction(ActionEnum.ChangeUserId, null);
   }
 
   public handleGetMetadata() {
     const url = BACKEND_URL + CREATE_QUESTION_CONTROLLER;
-    const result = this.http.get(url);
+    const result = this.http.get(url, { withCredentials: true });
     result.subscribe({
       next: (response: any) => {
         const old_question_metadata = this.service.metadata.value;

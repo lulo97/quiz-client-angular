@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from "@angular/core";
 import { ImageModule } from "primeng/image";
 import { CreateQuestionService } from "../services/create-question.service";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 import { ButtonModule } from "primeng/button";
 import { CommonModule } from "@angular/common";
 

@@ -3,7 +3,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 import { CommonModule } from "@angular/common";
 import { compareIgnore } from "../../../utils/utils";
 
@@ -17,7 +17,7 @@ import { compareIgnore } from "../../../utils/utils";
       <p-dropdown
         appendTo="body"
         [options]="datas"
-        [(ngModel)]="service.selectedMetadata.value.questionType"
+        [(ngModel)]="service.data.value.questionType"
         [showClear]="true"
         [editable]="false"
         [filter]="true"

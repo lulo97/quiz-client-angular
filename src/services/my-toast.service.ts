@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { Injectable } from "@angular/core";
+import { MessageService } from "primeng/api";
 
-const GLOBAL = 'global'; //Use for global toast
-const LOADING = 'loading'; //Use for async/await function
+const GLOBAL = "global"; //Use for global toast
+const LOADING = "loading"; //Use for async/await function
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class MyToastService {
   constructor(private messageService: MessageService) {}
@@ -13,8 +13,8 @@ export class MyToastService {
   showSuccess(message: string) {
     this.messageService.add({
       key: GLOBAL,
-      severity: 'success',
-      summary: 'Thành công',
+      severity: "success",
+      summary: "Thành công",
       detail: message,
     });
   }
@@ -22,16 +22,16 @@ export class MyToastService {
   showLoading(message: string) {
     this.messageService.add({
       key: LOADING,
-      severity: 'infor',
-      summary: 'Đang tải',
+      severity: "infor",
+      summary: "Đang tải",
       detail: message,
       life: 20000,
     });
   }
 
-  changeLoading(severity: 'success' | 'error', message: string) {
+  changeLoading(severity: "success" | "error", message: string) {
     this.messageService.clear(LOADING);
-    const summary = severity == 'success' ? 'Thành công' : 'Thất bại';
+    const summary = severity == "success" ? "Thành công" : "Thất bại";
     this.messageService.add({
       key: LOADING,
       severity: severity,
@@ -43,20 +43,22 @@ export class MyToastService {
 
   showWarning(message: string) {
     this.messageService.add({
+      sticky: true,
       key: GLOBAL,
-      severity: 'warn',
-      summary: 'Cảnh báo',
+      severity: "warn",
+      summary: "Cảnh báo",
       detail: message,
     });
   }
 
   showError(message: string) {
+    if (!message) message = "Lỗi bất định!";
     this.messageService.add({
-      sticky: true,
       key: GLOBAL,
-      severity: 'error',
-      summary: 'Lỗi',
+      severity: "error",
+      summary: "Lỗi",
       detail: message,
+      life: 2000,
     });
   }
 }

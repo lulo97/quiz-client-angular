@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
 import { DEFAULT_METADATA, ISelectItem } from "./utils";
 import { CommonModule } from "@angular/common";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 import { compareIgnore } from "../../../utils/utils";
 
 @Component({
@@ -17,14 +17,14 @@ import { compareIgnore } from "../../../utils/utils";
       [editable]="false"
       appendTo="body"
       [options]="datas"
-      [(ngModel)]="service.selectedMetadata.value.book"
-      [showClear]="true"
+      [(ngModel)]="service.data.value.book"
       [filter]="true"
       [virtualScroll]="true"
       [virtualScrollItemSize]="40"
       [style]="{ 'min-width': '20rem', width: '100%' }"
       optionLabel="name"
       placeholder="Chọn bộ sách..."
+      [showClear]="true"
     />
   `,
 })

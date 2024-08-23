@@ -3,7 +3,7 @@ import { ButtonModule } from "primeng/button";
 import { ModalCreate } from "../modals/modal-create";
 import { ModalSetting } from "../modals/modal-setting";
 import { CreateQuestionService } from "../services/create-question.service";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 
 @Component({
   selector: "ButtonsBar",

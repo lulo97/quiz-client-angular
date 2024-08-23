@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { FormsModule } from "@angular/forms";
 import { CreateQuestionService } from "../services/create-question.service";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 
 @Component({
   selector: "QuestionContent",

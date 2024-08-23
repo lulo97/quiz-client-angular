@@ -3,7 +3,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { CreateQuestionService } from "../services/create-question.service";
-import { ActionEnum } from "../utils/utils";
+import { ActionEnum } from "../utils/enums";
 
 @Component({
   selector: "Explanation",

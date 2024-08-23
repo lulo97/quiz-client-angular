@@ -1,16 +1,17 @@
 import { Injectable } from "@angular/core";
-import {
-  getNewAnswer,
-  getRawData,
-  ActionEnum,
-  getRawMetadata,
-  IAnswer,
-  getRawSelectedMetadata,
-} from "../utils/utils";
+import { getNewAnswer, getRawData, getRawMetadata } from "../utils/utils";
 import { BehaviorSubject } from "rxjs";
 import { MyToastService } from "../../../services/my-toast.service";
 import { DEFAULT_METADATA, ISelectItem } from "../selects/utils";
-import { compareIgnore } from "../../../utils/utils";
+import {
+  BACKEND_URL,
+  compareIgnore,
+  isNullOrEmpty,
+} from "../../../utils/utils";
+import { AuthenticationService } from "../../../services/authentication.service";
+import { ActionEnum } from "../utils/enums";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { ICreateQuestionPOST } from "../utils/interfaces";
 
 //Available in application, don't have to import in any component
 //Only have one instance in application
@@ -30,14 +31,15 @@ Angular component can rerender if new object is detected:
   + const obj = old_obj.map(ele => ele) //New parent object (obj) but child object (ele) inside parent object still reference 
 */
 
-const MC: string = "MutipleChoice";
-const SC: string = "SingleChoice";
-const QuestionType: string = MC;
 export const CREATE_QUESTION_CONTROLLER = "CreateQuestion";
 
 @Injectable({ providedIn: "root" })
 export class CreateQuestionService {
-  constructor(public toast: MyToastService) {}
+  constructor(
+    private toast: MyToastService,
+    private authService: AuthenticationService,
+    private http: HttpClient
+  ) {}
 
   public data = new BehaviorSubject(getRawData());
   public data$ = this.data.asObservable();
@@ -45,13 +47,127 @@ export class CreateQuestionService {
   public metadata = new BehaviorSubject(getRawMetadata());
   public metadata$ = this.metadata.asObservable();
 
-  public selectedMetadata = new BehaviorSubject(getRawSelectedMetadata());
-  public selectedMetadata$ = this.selectedMetadata.asObservable();
-
   public handleAction(action: ActionEnum, payload: any) {
     const old_data = this.data.value;
-    const old_selectedMetadata = this.selectedMetadata.value;
     switch (action) {
+      case ActionEnum.ConfirmCreate: {
+        let isError = false;
+        if (!old_data.QuestionContent) {
+          this.toast.showWarning("Nội dung câu hỏi trống!");
+          isError = true;
+        }
+        if (old_data.Answers.some((ele) => isNullOrEmpty(ele.Content))) {
+          this.toast.showWarning("Nội dung lựa chọn trống!");
+          isError = true;
+        }
+        //Don't allow 2 answer have the same content
+        if (
+          old_data.Answers.some(
+            (currentEle, index, array) =>
+              array.filter(
+                (ele) =>
+                  ele.Content.trim().toLowerCase() ===
+                  currentEle.Content.trim().toLowerCase()
+              ).length > 1
+          )
+        ) {
+          this.toast.showWarning("Có hai lựa chọn giống nhau!");
+          isError = true;
+        }
+        if (old_data.Answers.every((ele) => ele.IsCorrect == false)) {
+          this.toast.showWarning("Phải có ít nhất 1 đáp án đúng!");
+          isError = true;
+        }
+        if (old_data.ExplanationAllow == true && !old_data.Explanation) {
+          this.toast.showWarning("Nội dung giải thích trống");
+          isError = true;
+        }
+        if (!old_data.difficultLevel.id) {
+          this.toast.showWarning("Hãy chọn độ khó!");
+          isError = true;
+        }
+        if (!old_data.educationLevel.id) {
+          this.toast.showWarning("Hãy chọn trình độ học vấn!");
+          isError = true;
+        }
+        if (!old_data.subject.id) {
+          this.toast.showWarning("Hãy chọn môn học!");
+          isError = true;
+        }
+        if (!old_data.subSubject.id) {
+          this.toast.showWarning("Hãy chọn chương!");
+          isError = true;
+        }
+        if (!old_data.language.id) {
+          this.toast.showWarning("Hãy chọn ngôn ngữ");
+          isError = true;
+        }
+        if (!old_data.book.id) {
+          this.toast.showWarning("Hãy chọn nguồn sách!");
+          isError = true;
+        }
+        if (!old_data.questionType.id) {
+          this.toast.showWarning("Hãy chọn loại câu hỏi!");
+          isError = true;
+        }
+        if (!old_data.point.id) {
+          this.toast.showWarning("Hãy chọn điểm!");
+          isError = true;
+        }
+        if (!old_data.UserId) {
+          this.toast.showWarning("Mã người dùng trống!");
+          isError = true;
+        }
+        if (isError) break;
+        const url = BACKEND_URL + CREATE_QUESTION_CONTROLLER;
+
+        const formData = new FormData();
+        formData.append("QuestionContent", old_data.QuestionContent);
+        if (old_data.Explanation) {
+          formData.append("Explanation", old_data.Explanation);
+        }
+        formData.append("UserId", old_data.UserId);
+        formData.append("difficultLevelId", old_data.difficultLevel.id);
+        formData.append("subSubjectId", old_data.subSubject.id);
+        formData.append("questionTypeId", old_data.questionType.id);
+        formData.append("languageId", old_data.language.id);
+        formData.append("pointId", old_data.point.id);
+        if (old_data.penaltyPoint.id) {
+          formData.append("penaltyPointId", old_data.penaltyPoint.id ?? null);
+        }
+        formData.append("bookId", old_data.book.id);
+
+        // Append file fields
+        if (old_data.ImageFile) {
+          formData.append("ImageFile", old_data.ImageFile);
+        }
+        if (old_data.AudioFile) {
+          formData.append("AudioFile", old_data.AudioFile);
+        }
+
+        // Convert answers to JSON and append
+        formData.append("Answers", JSON.stringify(old_data.Answers));
+
+        const result = this.http.post(url, formData);
+        result.subscribe({
+          complete: () => {},
+          next: (response) => {},
+          error: (response: HttpErrorResponse) => {
+            this.toast.showError(response.error.detail);
+            console.error(response);
+          },
+        });
+        break;
+      }
+      case ActionEnum.ChangeUserId: {
+        const UserId: string = this.authService.currentUser.id;
+        if (isNullOrEmpty(UserId)) {
+          this.toast.showWarning("Mã người dùng rỗng!");
+          break;
+        }
+        this.data.next({ ...old_data, UserId: UserId });
+        break;
+      }
       case ActionEnum.ChangeFileImage: {
         const file = payload;
         this.data.next({ ...old_data, ImageFile: file });
@@ -64,44 +180,44 @@ export class CreateQuestionService {
       }
       case ActionEnum.ChangeSelectBook: {
         const book: ISelectItem = payload;
-        this.selectedMetadata.next({ ...old_selectedMetadata, book: book });
+        this.data.next({ ...old_data, book: book });
         break;
       }
       case ActionEnum.ChangeSelectDifficultLevel: {
         const difficultLevel: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           difficultLevel: difficultLevel,
         });
         break;
       }
       case ActionEnum.ChangeSelectEducationLevel: {
         const educationLevel: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           educationLevel: educationLevel,
         });
         break;
       }
       case ActionEnum.ChangeSelectLanguage: {
         const language: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           language: language,
         });
         break;
       }
       case ActionEnum.ChangeSelectPenaltyPoint: {
         const penaltyPoint: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           penaltyPoint: penaltyPoint,
         });
         break;
       }
       case ActionEnum.ChangeSelectPoint: {
         const point: ISelectItem = payload;
-        this.selectedMetadata.next({ ...old_selectedMetadata, point: point });
+        this.data.next({ ...old_data, point: point });
         break;
       }
       case ActionEnum.ChangeSelectQuestionType: {
@@ -149,28 +265,25 @@ export class CreateQuestionService {
           });
         }
 
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
-          questionType: questionType,
-        });
         this.data.next({
           ...old_data,
           Answers: NewAnswers,
+          questionType: questionType,
         });
         break;
       }
       case ActionEnum.ChangeSelectSubSubject: {
         const subSubject: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           subSubject: subSubject,
         });
         break;
       }
       case ActionEnum.ChangeSelectSubject: {
         const subject: ISelectItem = payload;
-        this.selectedMetadata.next({
-          ...old_selectedMetadata,
+        this.data.next({
+          ...old_data,
           subject: subject,
         });
         break;
@@ -178,7 +291,7 @@ export class CreateQuestionService {
       case ActionEnum.AddAnswer: {
         if (old_data.Answers.length >= 8) {
           this.toast.showWarning("Tối đa 8 lựa chọn!");
-          return;
+          break;
         }
         //Ensure to create new array, directly assign will only reference
         const NewAnswers = [...old_data.Answers, getNewAnswer()];
@@ -190,8 +303,7 @@ export class CreateQuestionService {
       }
       case ActionEnum.ChangeAnswerIsCorrect: {
         const Id: string = payload;
-        const CurrentQuestionType =
-          this.selectedMetadata.value.questionType.name;
+        const CurrentQuestionType = this.data.value.questionType.name;
         const IsSingleChoice = compareIgnore(
           CurrentQuestionType,
           DEFAULT_METADATA.QUESTION_TYPE.SINGLE_NAME
@@ -236,7 +348,7 @@ export class CreateQuestionService {
       case ActionEnum.DeleteAnswer: {
         if (old_data.Answers.length <= 2) {
           this.toast.showWarning("Cần ít nhất 2 lựa chọn!");
-          return;
+          break;
         }
         const Id: string = payload;
         const NewAnswers = old_data.Answers.filter((ele) => ele.Id != Id);
@@ -282,7 +394,7 @@ export class CreateQuestionService {
         break;
       }
       default: {
-        return;
+        break;
       }
     }
   }

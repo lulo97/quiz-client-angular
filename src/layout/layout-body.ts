@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'LayoutBody',
+  selector: "LayoutBody",
   standalone: true,
   imports: [],
   template: ` <div class="p-1 h-full w-full"><ng-content></ng-content></div> `,
